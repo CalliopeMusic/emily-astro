@@ -1,0 +1,4187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emily · Astro Gold Predictive Reading</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a96e;
+    --gold-light: #e8d5a3;
+    --gold-dark: #8b6914;
+    --deep: #0d0a14;
+    --mid: #1a1525;
+    --surface: #221c30;
+    --surface2: #2d2540;
+    --text: #e8e0d5;
+    --text-muted: #9d8fa0;
+    --accent-teal: #7ecdc4;
+    --accent-rose: #e07070;
+    --accent-purple: #b07fd4;
+    --accent-blue: #6aaddb;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--deep);
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 75% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 60%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 70%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 65% 85%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 85% 90%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 40% 55%, rgba(201,169,110,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 20%, rgba(201,169,110,0.2) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    padding: 64px 0 48px;
+    animation: fadeInUp 0.8s ease both;
+  }
+
+  .header-ornament {
+    font-size: 28px;
+    letter-spacing: 12px;
+    color: var(--gold);
+    opacity: 0.6;
+    margin-bottom: 20px;
+  }
+
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 4px;
+    line-height: 1.2;
+  }
+
+  header h1 span {
+    display: block;
+    font-size: 0.42em;
+    letter-spacing: 8px;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin-top: 10px;
+    font-family: 'Lato', sans-serif;
+    font-style: italic;
+  }
+
+  .birth-details {
+    margin-top: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 28px auto;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,169,110,0.4), transparent);
+  }
+
+  /* Overview cards */
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .overview-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 14px;
+    padding: 24px;
+    animation: fadeInUp 0.6s ease both;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+
+  .overview-card:hover { transform: translateY(-3px); border-color: rgba(201,169,110,0.3); }
+  .overview-card .oc-icon { font-size: 24px; margin-bottom: 12px; }
+
+  .overview-card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .overview-card p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-muted);
+  }
+
+  /* Planet summary */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .planet-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 12px;
+    padding: 20px 18px;
+    transition: transform 0.2s, border-color 0.2s;
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  .planet-card:hover { transform: translateY(-3px); border-color: rgba(201,169,110,0.4); }
+  .planet-card .symbol { font-size: 26px; margin-bottom: 8px; }
+
+  .planet-card .planet-name {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .planet-card .planet-pos {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .planet-card .planet-pos strong { color: var(--text); font-weight: 400; }
+
+  /* Filter */
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid rgba(201,169,110,0.25);
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Lato', sans-serif;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: rgba(201,169,110,0.15);
+    color: var(--gold-light);
+    border-color: var(--gold);
+  }
+
+  /* Timeline */
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(180deg, var(--gold) 0%, rgba(201,169,110,0.1) 100%);
+  }
+
+  .event {
+    position: relative;
+    margin-bottom: 8px;
+    animation: fadeInUp 0.4s ease both;
+  }
+
+  .event::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 18px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--gold);
+    background: var(--deep);
+  }
+
+  .event.positive::before { border-color: var(--accent-teal); box-shadow: 0 0 6px rgba(126,205,196,0.4); }
+  .event.challenging::before { border-color: var(--accent-rose); box-shadow: 0 0 6px rgba(224,112,112,0.4); }
+  .event.transformative::before { border-color: var(--accent-purple); box-shadow: 0 0 6px rgba(176,127,212,0.4); }
+  .event.healing::before { border-color: var(--accent-blue); box-shadow: 0 0 6px rgba(106,173,219,0.4); }
+
+  .event-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px;
+    padding: 14px 18px;
+    transition: background 0.2s, border-color 0.2s;
+    user-select: none;
+  }
+
+  .event-header:hover { background: var(--surface2); border-color: rgba(201,169,110,0.2); }
+
+  .event-date {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    color: var(--gold);
+    min-width: 70px;
+    flex-shrink: 0;
+  }
+
+  .event-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .badge-positive { background: rgba(126,205,196,0.15); color: var(--accent-teal); border: 1px solid rgba(126,205,196,0.3); }
+  .badge-challenging { background: rgba(224,112,112,0.15); color: var(--accent-rose); border: 1px solid rgba(224,112,112,0.3); }
+  .badge-transformative { background: rgba(176,127,212,0.15); color: var(--accent-purple); border: 1px solid rgba(176,127,212,0.3); }
+  .badge-healing { background: rgba(106,173,219,0.15); color: var(--accent-blue); border: 1px solid rgba(106,173,219,0.3); }
+
+  .event-title {
+    flex: 1;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text);
+    line-height: 1.3;
+  }
+
+  .event-chevron {
+    color: var(--text-muted);
+    font-size: 12px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .event.open .event-chevron { transform: rotate(180deg); }
+
+  .event-body {
+    display: none;
+    background: rgba(13,10,20,0.5);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    padding: 18px 20px;
+    margin-top: -4px;
+  }
+
+  .event.open .event-body { display: block; }
+
+  .event-duration {
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+
+  .event-body p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.8;
+    color: #cfc5d8;
+  }
+
+  .event-body .key-theme {
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+
+  .positive .key-theme { background: rgba(126,205,196,0.08); border-left: 3px solid var(--accent-teal); color: #a8e0db; }
+  .challenging .key-theme { background: rgba(224,112,112,0.08); border-left: 3px solid var(--accent-rose); color: #e8a0a0; }
+  .transformative .key-theme { background: rgba(176,127,212,0.08); border-left: 3px solid var(--accent-purple); color: #c8a8e0; }
+  .healing .key-theme { background: rgba(106,173,219,0.08); border-left: 3px solid var(--accent-blue); color: #a0c8e8; }
+
+  /* Natal tags */
+  .natal-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  .ntag {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--gold-light);
+    background: rgba(201,169,110,0.1);
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 20px;
+    padding: 4px 12px;
+  }
+
+  /* Natal section */
+  .natal-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+    align-items: start;
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  .natal-wheel-wrap {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #chart-wheel { width: 100%; max-width: 340px; }
+
+  .natal-tables {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .natal-table-block {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .natal-table-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 10px 14px 8px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+
+  .natal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+
+  .natal-table thead th {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    padding: 6px 14px;
+    text-align: left;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .natal-table tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+  }
+
+  .natal-table tbody tr:hover { background: rgba(201,169,110,0.05); }
+  .natal-table tbody tr:last-child { border-bottom: none; }
+
+  .natal-table tbody td {
+    padding: 6px 14px;
+    color: var(--text-muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13.5px;
+  }
+
+  .natal-table tbody td:first-child { color: var(--text); }
+
+  /* ══════════════════════════════════════════
+     DAILY SKY — Redesigned
+  ══════════════════════════════════════════ */
+
+  /* Date/Time Picker */
+  .ds-picker-wrap {
+    margin-bottom: 32px;
+  }
+  .ds-picker-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(201,169,110,0.06), rgba(0,0,0,0.2));
+    border: 1px solid rgba(201,169,110,0.18);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 10px;
+  }
+  .ds-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    min-width: 130px;
+  }
+  .ds-field-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.75;
+  }
+  .ds-input {
+    background: rgba(0,0,0,0.35);
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    color-scheme: dark;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .ds-input:focus {
+    border-color: rgba(201,169,110,0.55);
+    background: rgba(0,0,0,0.5);
+  }
+  .ds-actions {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+    flex-shrink: 0;
+  }
+  .ds-calc-btn {
+    background: linear-gradient(135deg, rgba(201,169,110,0.3), rgba(201,169,110,0.1));
+    border: 1px solid rgba(201,169,110,0.55);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.22s;
+    white-space: nowrap;
+  }
+  .ds-calc-btn:hover {
+    background: rgba(201,169,110,0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(201,169,110,0.2);
+  }
+  .ds-now-btn {
+    background: transparent;
+    border: 1px solid rgba(201,169,110,0.15);
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    padding: 11px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .ds-now-btn:hover { color: var(--gold); border-color: rgba(201,169,110,0.4); }
+  .ds-active-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--text-muted);
+    opacity: 0.7;
+    padding-left: 4px;
+    min-height: 18px;
+  }
+  .ds-label-live {
+    color: #6ee7b7;
+    font-style: normal;
+    font-size: 10px;
+    margin-right: 4px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  /* Loading */
+  .ds-loading {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 15px;
+    padding: 24px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sky-pulse { animation: pulse 1.4s ease-in-out infinite; color: var(--gold); }
+
+  /* Main two-column grid */
+  .ds-main-grid {
+    display: none;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 20px;
+    margin-bottom: 40px;
+    align-items: start;
+  }
+  @media (max-width: 720px) { .ds-main-grid { grid-template-columns: 1fr; } }
+
+  .ds-col {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .ds-collapsible {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .ds-collapsible summary { list-style: none; }
+  .ds-collapsible summary::-webkit-details-marker { display: none; }
+  .ds-collapsible[open] .ds-chevron { transform: rotate(90deg); }
+  .ds-chevron {
+    font-size: 16px;
+    color: var(--gold);
+    opacity: 0.5;
+    transition: transform 0.22s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+  .ds-col-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+    background: rgba(0,0,0,0.2);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.18s;
+    gap: 8px;
+  }
+  .ds-col-header:hover { background: rgba(201,169,110,0.05); }
+  .ds-collapsible[open] .ds-col-header {
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+  .ds-collapsible:not([open]) .ds-col-header {
+    border-bottom: none;
+    border-radius: 16px;
+  }
+  .ds-col-title {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.8;
+    flex: 1;
+  }
+  .ds-legend {
+    display: flex;
+    gap: 10px;
+  }
+  .ds-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Cinzel', serif;
+    font-size: 7.5px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    opacity: 0.6;
+    text-transform: uppercase;
+  }
+  .ds-dot { width: 5px; height: 5px; border-radius: 50%; }
+  .ds-dot.easy { background: var(--accent-teal); }
+  .ds-dot.hard { background: var(--accent-rose); }
+  .ds-dot.neutral { background: var(--accent-purple); }
+
+  /* Planet list */
+  .ds-planet-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .ds-planet-row {
+    display: grid;
+    grid-template-columns: 28px 1fr 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background 0.15s;
+  }
+  .ds-planet-row:last-child { border-bottom: none; }
+  .ds-planet-row:hover { background: rgba(201,169,110,0.04); }
+  .ds-planet-sym {
+    font-size: 17px;
+    line-height: 1;
+    text-align: center;
+  }
+  .ds-planet-name {
+    font-family: 'Cinzel', serif;
+    font-size: 8.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+  .ds-planet-sign {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .ds-planet-deg {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    opacity: 0.65;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /* Aspects list */
+  .ds-aspects-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .ds-aspect-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    border-left: 3px solid transparent;
+    transition: background 0.15s;
+  }
+  .ds-aspect-row:last-child { border-bottom: none; }
+  .ds-aspect-row:hover { background: rgba(255,255,255,0.025); }
+  .ds-aspect-row.easy  { border-left-color: var(--accent-teal); }
+  .ds-aspect-row.hard  { border-left-color: var(--accent-rose); }
+  .ds-aspect-row.neutral { border-left-color: var(--accent-purple); }
+  .ds-aspect-pip { display: none; }
+  .ds-aspect-text { flex: 1; }
+  .ds-aspect-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 14.5px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .ds-aspect-main strong { font-weight: 500; }
+  .ds-aspect-type-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 7.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .ds-aspect-type-badge.easy    { background: rgba(94,234,212,0.12); color: var(--accent-teal); }
+  .ds-aspect-type-badge.hard    { background: rgba(224,112,112,0.12); color: var(--accent-rose); }
+  .ds-aspect-type-badge.neutral { background: rgba(167,139,250,0.12); color: var(--accent-purple); }
+  .ds-aspect-detail {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+
+  /* ══════════════════════════════════════════
+     ORACLE — Redesigned
+  ══════════════════════════════════════════ */
+  .ds-oracle-wrap {
+    background: linear-gradient(160deg, rgba(201,169,110,0.05) 0%, rgba(0,0,0,0.2) 100%);
+    border: 1px solid rgba(201,169,110,0.18);
+    border-radius: 20px;
+    padding: 32px 36px;
+    margin-bottom: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ds-oracle-wrap::after {
+    content: '✦';
+    position: absolute;
+    bottom: -30px; right: 20px;
+    font-size: 120px;
+    color: rgba(201,169,110,0.03);
+    pointer-events: none;
+    line-height: 1;
+  }
+  .ds-oracle-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+  .ds-oracle-title-block {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .ds-oracle-glyph {
+    font-size: 28px;
+    color: var(--gold);
+    opacity: 0.7;
+    line-height: 1;
+  }
+  .ds-oracle-title {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 3px;
+  }
+  .ds-oracle-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  /* Collapsible context */
+  .ds-context-details {
+    margin-bottom: 24px;
+  }
+  .ds-context-summary {
+    font-family: 'Cinzel', serif;
+    font-size: 8.5px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.5;
+    cursor: pointer;
+    padding: 8px 0;
+    list-style: none;
+    transition: opacity 0.2s;
+    user-select: none;
+  }
+  .ds-context-summary:hover { opacity: 0.85; }
+  .ds-context-details[open] .ds-context-summary { opacity: 0.8; }
+  .ds-context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(201,169,110,0.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 10px;
+  }
+  @media (max-width: 560px) { .ds-context-grid { grid-template-columns: 1fr; } }
+  .ds-context-sub {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    opacity: 0.65;
+  }
+
+  /* Suggestions */
+  .ds-suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .ds-suggest {
+    background: rgba(201,169,110,0.06);
+    border: 1px solid rgba(201,169,110,0.16);
+    color: var(--text-muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13.5px;
+    padding: 8px 18px;
+    border-radius: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+  .ds-suggest:hover {
+    background: rgba(201,169,110,0.14);
+    color: var(--gold-light);
+    border-color: rgba(201,169,110,0.45);
+    transform: translateY(-1px);
+  }
+
+  /* Input row */
+  .ds-input-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 4px;
+  }
+  .ds-textarea {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    padding: 14px 18px;
+    resize: none;
+    line-height: 1.55;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .ds-textarea:focus {
+    border-color: rgba(201,169,110,0.55);
+    background: rgba(0,0,0,0.45);
+  }
+  .ds-textarea::placeholder { color: var(--text-muted); opacity: 0.45; }
+  .ds-ask-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(160deg, rgba(201,169,110,0.3), rgba(201,169,110,0.1));
+    border: 1px solid rgba(201,169,110,0.6);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.22s;
+    white-space: nowrap;
+    flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .ds-ask-icon { font-size: 18px; }
+  .ds-ask-btn:hover:not(:disabled) {
+    background: linear-gradient(160deg, rgba(201,169,110,0.45), rgba(201,169,110,0.22));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(201,169,110,0.22);
+  }
+  .ds-ask-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+  /* Response */
+  .ds-response-wrap {
+    margin-top: 28px;
+    padding: 24px 28px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 14px;
+    animation: fadeInUp 0.5s ease both;
+  }
+  .ds-response-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+  .ds-response-label {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 3.5px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .ds-response-date {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+  .ds-response-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    line-height: 1.9;
+    color: #d4c8e4;
+    white-space: pre-wrap;
+  }
+
+  /* Readings section header */
+  .ds-readings-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 48px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,169,110,0.15);
+  }
+
+
+
+  /* ══════════════════════════════════════════
+     THIS MONTH PAGE
+  ══════════════════════════════════════════ */
+
+  /* Month navigator */
+  .month-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 12px;
+  }
+  .month-nav-btn {
+    width: 40px; height: 40px;
+    background: rgba(201,169,110,0.08);
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 50%;
+    color: var(--gold);
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .month-nav-btn:hover {
+    background: rgba(201,169,110,0.2);
+    transform: scale(1.08);
+  }
+  .month-nav-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+  .month-label {
+    font-family: 'Cinzel', serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+  }
+  .month-today-btn {
+    background: transparent;
+    border: 1px solid rgba(201,169,110,0.18);
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 2.5px;
+    padding: 4px 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .month-today-btn:hover { color: var(--gold); border-color: rgba(201,169,110,0.45); }
+
+  /* Narrative overview */
+  .month-overview {
+    background: rgba(201,169,110,0.04);
+    border: 1px solid rgba(201,169,110,0.14);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 14px 14px 0;
+    padding: 20px 24px;
+    margin-bottom: 32px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.85;
+    color: #cfc5d8;
+  }
+  .month-overview strong {
+    font-style: normal;
+    color: var(--gold-light);
+    font-weight: 400;
+  }
+
+  /* Mini calendar */
+  .month-cal-wrap {
+    margin-bottom: 36px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(201,169,110,0.1);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .month-cal-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: rgba(201,169,110,0.06);
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+  .month-cal-header span {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.6;
+    text-align: center;
+    padding: 10px 4px;
+    text-transform: uppercase;
+  }
+  .month-cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1px;
+    background: rgba(201,169,110,0.06);
+    padding: 1px;
+  }
+  .cal-day {
+    background: rgba(13,10,20,0.8);
+    min-height: 52px;
+    padding: 6px 8px;
+    position: relative;
+    transition: background 0.15s;
+    cursor: default;
+  }
+  .cal-day.has-event { cursor: pointer; }
+  .cal-day.has-event:hover { background: rgba(201,169,110,0.07); }
+  .cal-day.today { background: rgba(201,169,110,0.08); }
+  .cal-day.today .cal-day-num { color: var(--gold); }
+  .cal-day.other-month { opacity: 0.25; }
+  .cal-day-num {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .cal-event-dots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 2px;
+  }
+  .cal-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cal-dot.positive  { background: var(--accent-teal); }
+  .cal-dot.challenging { background: var(--accent-rose); }
+  .cal-dot.transformative { background: var(--accent-purple); }
+  .cal-dot.healing { background: #7eb8d4; }
+
+  /* Events list */
+  .month-events-header {
+    margin-bottom: 14px;
+  }
+  .month-events-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.6;
+  }
+  .month-events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .month-event-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-left: 3px solid var(--ev-color, rgba(201,169,110,0.4));
+    border-radius: 0 12px 12px 0;
+    padding: 16px 20px;
+    transition: background 0.18s;
+    animation: fadeInUp 0.35s ease both;
+  }
+  .month-event-card:hover { background: rgba(255,255,255,0.04); }
+  .month-event-card.positive     { --ev-color: var(--accent-teal); }
+  .month-event-card.challenging  { --ev-color: var(--accent-rose); }
+  .month-event-card.transformative { --ev-color: var(--accent-purple); }
+  .month-event-card.healing      { --ev-color: #7eb8d4; }
+  .month-ev-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .month-ev-date {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    opacity: 0.8;
+    text-transform: uppercase;
+  }
+  .month-ev-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 8px;
+    opacity: 0.85;
+  }
+  .month-ev-badge.positive     { background: rgba(126,205,196,0.12); color: var(--accent-teal); }
+  .month-ev-badge.challenging  { background: rgba(224,112,112,0.12); color: var(--accent-rose); }
+  .month-ev-badge.transformative { background: rgba(176,127,212,0.12); color: var(--accent-purple); }
+  .month-ev-badge.healing      { background: rgba(126,184,212,0.12); color: #7eb8d4; }
+  .month-ev-title {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .month-ev-duration {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-bottom: 10px;
+  }
+  .month-ev-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: #c8bedd;
+  }
+  .month-ev-tip {
+    margin-top: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-style: italic;
+    opacity: 0.75;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .month-no-events {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-muted);
+    opacity: 0.6;
+    font-size: 15px;
+    padding: 12px 0 40px;
+  }
+
+  /* ── TAB NAVIGATION ── */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    margin: 0 0 40px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 14px;
+    padding: 5px;
+    position: relative;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tab-nav::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 11px 18px;
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--gold-light); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, rgba(201,169,110,0.2), rgba(201,169,110,0.08));
+    border: 1px solid rgba(201,169,110,0.3);
+    color: var(--gold-light);
+    box-shadow: 0 2px 12px rgba(201,169,110,0.1);
+  }
+  .tab-icon { font-size: 14px; opacity: 0.9; }
+  .tab-label { letter-spacing: 2px; }
+
+  /* ── TAB PAGES ── */
+  .tab-page {
+    display: none;
+    animation: fadeInUp 0.35s ease both;
+  }
+  .tab-page.active { display: block; }
+
+  /* remove old divider — replaced by tab nav spacing */
+  .divider { display: none; }
+
+  /* ── WEEK VIEW ── */
+  .week-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+  .week-day-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 28px;
+  }
+  .week-day-cell {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.1);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .week-day-cell.today {
+    border-color: rgba(201,169,110,0.5);
+    background: rgba(201,169,110,0.08);
+  }
+  .week-day-cell.has-event { border-color: rgba(201,169,110,0.3); }
+  .week-day-name {
+    font-family: 'Cinzel', serif;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .week-day-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .week-day-cell.today .week-day-num { color: var(--gold-light); }
+  .week-day-dots {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    min-height: 7px;
+  }
+
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+  /* ── SAVED READINGS ── */
+  .readings-count-badge {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    background: rgba(201,169,110,0.15);
+    border: 1px solid rgba(201,169,110,0.25);
+    color: var(--gold);
+    padding: 2px 8px;
+    border-radius: 10px;
+    letter-spacing: 1px;
+    font-weight: 400;
+    margin-left: 4px;
+  }
+  .readings-empty {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 15px;
+    padding: 12px 0 40px;
+    opacity: 0.7;
+  }
+  .readings-log {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+  .reading-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 14px;
+    padding: 20px 22px;
+    animation: fadeInUp 0.4s ease both;
+    transition: border-color 0.2s;
+  }
+  .reading-card:hover { border-color: rgba(201,169,110,0.28); }
+  .reading-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .reading-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .reading-date {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+  .reading-sky-snap {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    color: var(--text-muted);
+    opacity: 0.6;
+    letter-spacing: 0.3px;
+    line-height: 1.5;
+  }
+  .reading-delete {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-muted);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .reading-delete:hover {
+    background: rgba(224,112,112,0.15);
+    border-color: rgba(224,112,112,0.4);
+    color: var(--accent-rose);
+  }
+  .reading-question {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+    line-height: 1.4;
+  }
+  .reading-answer-wrap {
+    border-left: 2px solid rgba(201,169,110,0.25);
+    padding-left: 14px;
+    margin-bottom: 12px;
+  }
+  .reading-answer {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #cfc5d8;
+    white-space: pre-wrap;
+  }
+  .reading-aspects {
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.55;
+    letter-spacing: 0.3px;
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .natal-section { grid-template-columns: 1fr; }
+    .oracle-input-row { flex-direction: column; align-items: stretch; }
+    .oracle-btn { text-align: center; }
+  }
+  @media (max-width: 600px) {
+    .event-date { min-width: 48px; font-size: 11px; }
+    .event-title { font-size: 14px; }
+    .event-badge { display: none; }
+  }
+
+  /* ═══════════════════════════════════════
+     MOBILE — comprehensive fixes
+  ═══════════════════════════════════════ */
+  @media (max-width: 480px) {
+
+    /* Container */
+    .container { padding: 0 14px 60px; }
+
+    /* Header */
+    header { padding: 36px 0 24px; }
+    .header-ornament { font-size: 20px; letter-spacing: 8px; margin-bottom: 14px; }
+    .birth-details { font-size: 13px; line-height: 1.6; }
+    .natal-tags { gap: 6px; margin-top: 12px; }
+    .ntag { font-size: 10px; padding: 4px 10px; letter-spacing: 1px; }
+
+    /* Tab nav — scrolls horizontally, icons + short labels */
+    .tab-nav {
+      padding: 4px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      gap: 2px;
+    }
+    .tab-btn {
+      padding: 9px 10px;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 58px;
+    }
+    .tab-icon { font-size: 15px; }
+    .tab-label { font-size: 7px; letter-spacing: 0.6px; }
+
+    /* DS picker — stack everything vertically */
+    .ds-picker-row {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 14px;
+      gap: 10px;
+    }
+    .ds-field { min-width: unset; width: 100%; }
+    .ds-field-label { font-size: 8px; letter-spacing: 1.5px; display: block; margin-bottom: 4px; }
+    .ds-actions { width: 100%; display: flex; gap: 8px; }
+    .ds-calc-btn { flex: 1; text-align: center; padding: 10px 8px; font-size: 9px; letter-spacing: 1.5px; }
+    .ds-now-btn  { flex: 1; text-align: center; padding: 10px 8px; font-size: 9px; letter-spacing: 1.5px; }
+    .ds-input { font-size: 14px; padding: 9px 10px; width: 100%; }
+
+    /* DS two-col grid */
+    .ds-main-grid { grid-template-columns: 1fr !important; }
+
+    /* Oracle context grid */
+    .ds-context-grid { grid-template-columns: 1fr; }
+
+    /* DS suggestions */
+    .ds-suggestions { gap: 6px; }
+    .ds-suggest { font-size: 12px; padding: 7px 12px; }
+
+    /* DS oracle input */
+    .ds-input-row { flex-direction: column; }
+    .ds-ask-btn { width: 100%; justify-content: center; }
+
+    /* Oracle wrap */
+    .ds-oracle-wrap { padding: 22px 18px; }
+
+    /* Week day strip */
+    .week-day-strip { gap: 4px; }
+    .week-day-cell { padding: 8px 3px; border-radius: 8px; }
+    .week-day-name { font-size: 7px; letter-spacing: 0.5px; }
+    .week-day-num { font-size: 15px; }
+
+    /* Month nav */
+    .month-label { font-size: 16px; letter-spacing: 2px; }
+    .month-cal-header span { font-size: 8px; padding: 8px 2px; }
+    .cal-day { min-height: 42px; padding: 4px 5px; }
+    .cal-day-num { font-size: 10px; }
+
+    /* Month event cards */
+    .month-event-card { padding: 16px; }
+    .month-ev-title { font-size: 12px; }
+    .month-ev-body { font-size: 14px; }
+
+    /* Year reading */
+    .overview-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+
+    /* Natal chart */
+    .natal-section { grid-template-columns: 1fr; }
+
+    /* Section title */
+    .section-title { font-size: 9px; letter-spacing: 3px; }
+
+    /* Reading cards */
+    .reading-answer { font-size: 14px; }
+    .reading-question { font-size: 14px; }
+
+    /* Timeline events */
+    .event-header { padding: 12px 14px; }
+    .event-title { font-size: 13px; }
+  }
+
+  /* ── API KEY MODAL ── */
+  .akm-backdrop {
+    position: fixed; inset: 0; z-index: 999;
+    background: rgba(13,10,20,0.88);
+    backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .akm-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 20px;
+    padding: 36px 28px;
+    max-width: 400px; width: 100%;
+    text-align: center;
+    animation: fadeInUp 0.3s ease both;
+  }
+  .akm-glyph { font-size: 28px; color: var(--gold); margin-bottom: 12px; }
+  .akm-title {
+    font-family: 'Cinzel', serif;
+    font-size: 18px; letter-spacing: 3px;
+    color: var(--gold-light); margin-bottom: 16px;
+  }
+  .akm-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; line-height: 1.7;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .akm-hint {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px; color: var(--text-muted);
+    opacity: 0.7; margin-bottom: 20px;
+  }
+  .akm-link { color: var(--gold); text-decoration: none; }
+  .akm-link:hover { text-decoration: underline; }
+  .akm-input {
+    width: 100%;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(201,169,110,0.25);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    padding: 12px 16px;
+    outline: none;
+    margin-bottom: 16px;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+  }
+  .akm-input:focus { border-color: rgba(201,169,110,0.6); }
+  .akm-actions { display: flex; gap: 10px; margin-bottom: 16px; }
+  .akm-save {
+    flex: 1;
+    background: linear-gradient(135deg, rgba(201,169,110,0.3), rgba(201,169,110,0.1));
+    border: 1px solid rgba(201,169,110,0.5);
+    color: var(--gold-light);
+    font-family: 'Cinzel', serif;
+    font-size: 10px; letter-spacing: 2px;
+    padding: 12px; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .akm-save:hover { background: rgba(201,169,110,0.4); }
+  .akm-cancel {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text-muted);
+    font-family: 'Cinzel', serif;
+    font-size: 9px; letter-spacing: 2px;
+    padding: 12px 16px; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .akm-cancel:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+  .akm-note {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px; color: var(--text-muted); opacity: 0.5;
+  }
+  .oracle-key-reset {
+    display: block;
+    background: transparent; border: none;
+    font-family: 'Cinzel', serif;
+    font-size: 8px; letter-spacing: 2px;
+    color: var(--text-muted); opacity: 0.4;
+    cursor: pointer; padding: 4px 0;
+    margin: 8px auto 0;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .oracle-key-reset:hover { opacity: 0.8; }
+
+  /* ══════════════════════════════════════════
+     NATAL READING — Placement Interpretations
+  ══════════════════════════════════════════ */
+
+  .natal-reading-wrap {
+    margin-top: 48px;
+    padding-top: 8px;
+  }
+
+  .natal-reading-header {
+    text-align: center;
+    margin-bottom: 44px;
+    animation: fadeInUp 0.7s ease both;
+  }
+
+  .natal-reading-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+    opacity: 0.8;
+  }
+
+  .natal-reading-title {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 400;
+    color: var(--gold-light);
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+  }
+
+  .natal-reading-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-muted);
+  }
+
+  .natal-reading-divider {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* Big Three */
+  .nr-big-three {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .nr-placement-card {
+    background: linear-gradient(160deg, rgba(201,169,110,0.06) 0%, var(--surface) 100%);
+    border: 1px solid rgba(201,169,110,0.18);
+    border-radius: 16px;
+    padding: 28px 24px;
+    animation: fadeInUp 0.6s ease both;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .nr-placement-card:hover {
+    border-color: rgba(201,169,110,0.35);
+    transform: translateY(-2px);
+  }
+
+  .nr-placement-top {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .nr-glyph {
+    font-size: 32px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .nr-placement-name {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+    margin-bottom: 4px;
+  }
+
+  .nr-placement-degree {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .nr-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    line-height: 1.85;
+    color: #cfc5d8;
+    margin-bottom: 16px;
+  }
+
+  .nr-key-phrase {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    opacity: 0.75;
+    border-top: 1px solid rgba(201,169,110,0.15);
+    padding-top: 12px;
+    text-transform: uppercase;
+  }
+
+  .nr-key-phrase em {
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    text-transform: none;
+    color: var(--gold-light);
+    opacity: 0.9;
+  }
+
+  /* Inner planets */
+  .nr-inner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .nr-inner-card {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 14px;
+    padding: 22px 20px;
+    animation: fadeInUp 0.55s ease both;
+    transition: border-color 0.2s;
+  }
+
+  .nr-inner-card:hover { border-color: rgba(201,169,110,0.28); }
+
+  .nr-inner-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .nr-glyph-sm {
+    font-size: 22px;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .nr-inner-name {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    color: var(--gold-light);
+    margin-bottom: 3px;
+  }
+
+  .nr-inner-degree {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--text-muted);
+    opacity: 0.7;
+  }
+
+  .nr-inner-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    line-height: 1.8;
+    color: #bdb0cc;
+  }
+
+  /* Soul themes */
+  .nr-soul-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 48px;
+  }
+
+  .nr-soul-card {
+    background: rgba(13,10,20,0.5);
+    border: 1px solid rgba(201,169,110,0.1);
+    border-radius: 14px;
+    padding: 22px 20px;
+    animation: fadeInUp 0.55s ease both;
+    transition: border-color 0.2s;
+  }
+
+  .nr-soul-card:hover { border-color: rgba(201,169,110,0.25); }
+
+  .nr-soul-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+  }
+
+  .nr-soul-title {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    color: var(--gold);
+    opacity: 0.85;
+    line-height: 1.4;
+  }
+
+  /* North Node & Aspects */
+  .nr-aspects-wrap {
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.15);
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 48px;
+    animation: fadeInUp 0.6s ease both;
+  }
+
+  .nr-aspect-feature {
+    padding: 24px 24px 20px;
+    border-bottom: 1px solid rgba(201,169,110,0.1);
+    background: linear-gradient(135deg, rgba(201,169,110,0.05), transparent);
+  }
+
+  .nr-aspect-feature-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .nr-aspects-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nr-aspect-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: background 0.15s;
+  }
+
+  .nr-aspect-row:last-child { border-bottom: none; }
+  .nr-aspect-row:hover { background: rgba(201,169,110,0.03); }
+
+  .nr-aspect-planets {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    min-width: 72px;
+  }
+
+  .nr-aspect-sym {
+    font-size: 14px;
+    font-family: serif;
+  }
+
+  .easy-asp { color: var(--accent-teal); }
+  .challenging-asp { color: var(--accent-rose); }
+  .conj-asp { color: var(--gold); }
+
+  .nr-aspect-detail {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    line-height: 1.75;
+    color: #bdb0cc;
+  }
+
+  .nr-aspect-detail strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Synthesis */
+  .nr-synthesis {
+    background: linear-gradient(160deg, rgba(201,169,110,0.07) 0%, rgba(13,10,20,0.6) 100%);
+    border: 1px solid rgba(201,169,110,0.2);
+    border-radius: 18px;
+    padding: 36px 32px;
+    margin-bottom: 20px;
+    text-align: center;
+    animation: fadeInUp 0.65s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nr-synthesis::before {
+    content: '✦';
+    position: absolute;
+    top: -20px; right: 20px;
+    font-size: 100px;
+    color: rgba(201,169,110,0.04);
+    pointer-events: none;
+  }
+
+  .nr-synthesis-glyph {
+    font-size: 22px;
+    color: var(--gold);
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+
+  .nr-synthesis-title {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 22px;
+  }
+
+  .nr-synthesis-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    line-height: 1.95;
+    color: #cfc5d8;
+    max-width: 700px;
+    margin: 0 auto 16px;
+    text-align: left;
+  }
+
+  .nr-synthesis-text:last-child { margin-bottom: 0; }
+
+  @media (max-width: 480px) {
+    .nr-big-three { grid-template-columns: 1fr; }
+    .nr-inner-grid { grid-template-columns: 1fr; }
+    .nr-soul-grid { grid-template-columns: 1fr; }
+    .nr-placement-card { padding: 20px 16px; }
+    .nr-synthesis { padding: 24px 18px; }
+    .nr-aspect-row { flex-direction: column; gap: 8px; }
+    .nr-aspect-feature { padding: 20px 16px; }
+    .nr-aspects-list .nr-aspect-row { padding: 14px 16px; }
+  }
+
+
+  /* ══════════════════════════════════════════
+     HOUSES READING
+  ══════════════════════════════════════════ */
+
+  .nr-houses-intro {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+    max-width: 720px;
+  }
+
+  .nr-houses-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+
+  .nr-house-card {
+    display: flex;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid rgba(201,169,110,0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+    animation: fadeInUp 0.4s ease both;
+  }
+
+  .nr-house-card:hover {
+    border-color: rgba(201,169,110,0.3);
+  }
+
+  .nr-house-number-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 20px 16px;
+    background: rgba(201,169,110,0.05);
+    border-right: 1px solid rgba(201,169,110,0.1);
+    min-width: 56px;
+    flex-shrink: 0;
+  }
+
+  .nr-house-roman {
+    font-family: 'Cinzel', serif;
+    font-size: 16px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .nr-house-badge {
+    font-family: 'Cinzel', serif;
+    font-size: 7px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,169,110,0.15);
+    border: 1px solid rgba(201,169,110,0.3);
+    border-radius: 4px;
+    padding: 2px 5px;
+    white-space: nowrap;
+  }
+
+  .nr-house-content {
+    padding: 18px 22px;
+    flex: 1;
+  }
+
+  .nr-house-title {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: var(--gold-light);
+    margin-bottom: 5px;
+  }
+
+  .nr-house-theme {
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0.6;
+    margin-bottom: 12px;
+  }
+
+  .nr-house-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15.5px;
+    line-height: 1.82;
+    color: #bdb0cc;
+    margin: 0;
+  }
+
+  @media (max-width: 480px) {
+    .nr-house-card { flex-direction: row; }
+    .nr-house-number-wrap { min-width: 44px; padding: 14px 10px; }
+    .nr-house-roman { font-size: 13px; }
+    .nr-house-content { padding: 14px 14px; }
+    .nr-house-title { font-size: 11px; }
+    .nr-house-text { font-size: 14px; }
+    .nr-houses-intro { font-size: 15px; }
+  }
+
+</style>
+</head>
+<body>
+
+<div id="dashboard">
+  <div class="container">
+    <header>
+      <div class="header-ornament">✦ ✦ ✦</div>
+      <h1>Emily</h1>
+      <p class="birth-details">May 22 1995 · 8:47 PM EDT · Abington, Pennsylvania</p>
+      <div class="natal-tags">
+        <span class="ntag">☉ Gemini 1°</span>
+        <span class="ntag">☽ Pisces 20°</span>
+        <span class="ntag">↑ Sagittarius ASC</span>
+        <span class="ntag">♃ Sagittarius 11° R</span>
+        <span class="ntag">♄ Pisces 23°</span>
+        <span class="ntag">♇ Scorpio 29° R</span>
+      </div>
+    </header>
+
+    <!-- TAB NAV -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-tab="daily" onclick="switchTab('daily')">
+        <span class="tab-icon">☉</span>
+        <span class="tab-label">Daily Sky</span>
+      </button>
+      <button class="tab-btn" data-tab="week" onclick="switchTab('week')">
+        <span class="tab-icon">🌙</span>
+        <span class="tab-label">This Week</span>
+      </button>
+      <button class="tab-btn" data-tab="month" onclick="switchTab('month')">
+        <span class="tab-icon">◐</span>
+        <span class="tab-label">This Month</span>
+      </button>
+      <button class="tab-btn" data-tab="year" onclick="switchTab('year')">
+        <span class="tab-icon">✦</span>
+        <span class="tab-label">Year Reading</span>
+      </button>
+      <button class="tab-btn" data-tab="chart" onclick="switchTab('chart')">
+        <span class="tab-icon">☽</span>
+        <span class="tab-label">Natal Chart</span>
+      </button>
+    </nav>
+
+    <!-- PAGE: NATAL CHART -->
+    <div id="page-chart" class="tab-page">
+      <div class="section-title">Natal Chart</div>
+      <div class="natal-section">
+        <div class="natal-wheel-wrap">
+          <svg id="chart-wheel" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+        <div class="natal-tables">
+          <div class="natal-table-block">
+            <div class="natal-table-title">Planets</div>
+            <table class="natal-table">
+              <thead><tr><th>Planet</th><th>Sign</th><th>Degree</th></tr></thead>
+              <tbody>
+                <tr><td>☉ Sun</td><td>Gemini</td><td>1°27'</td></tr>
+                <tr><td>☽ Moon</td><td>Pisces</td><td>20°15'</td></tr>
+                <tr><td>☿ Mercury</td><td>Gemini</td><td>18°17'</td></tr>
+                <tr><td>♀ Venus</td><td>Taurus</td><td>7°21'</td></tr>
+                <tr><td>♂ Mars</td><td>Leo</td><td>28°49'</td></tr>
+                <tr><td>♃ Jupiter</td><td>Sagittarius</td><td>11°42' R</td></tr>
+                <tr><td>♄ Saturn</td><td>Pisces</td><td>23°10'</td></tr>
+                <tr><td>♅ Uranus</td><td>Aquarius</td><td>0°21' R</td></tr>
+                <tr><td>♆ Neptune</td><td>Capricorn</td><td>25°24' R</td></tr>
+                <tr><td>♇ Pluto</td><td>Scorpio</td><td>29°10' R</td></tr>
+                <tr><td>⚸ Lilith</td><td>Gemini</td><td>15°42'</td></tr>
+                <tr><td>☊ N. Node</td><td>Scorpio</td><td>5°26'</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="natal-table-block">
+            <div class="natal-table-title">Houses</div>
+            <table class="natal-table">
+              <thead><tr><th>House</th><th>Sign</th></tr></thead>
+              <tbody>
+                <tr><td>I (ASC)</td><td>Sagittarius</td></tr>
+                <tr><td>II</td><td>Capricorn</td></tr>
+                <tr><td>III</td><td>Aquarius</td></tr>
+                <tr><td>IV (IC)</td><td>Pisces</td></tr>
+                <tr><td>V</td><td>Aries</td></tr>
+                <tr><td>VI</td><td>Taurus</td></tr>
+                <tr><td>VII (DSC)</td><td>Gemini</td></tr>
+                <tr><td>VIII</td><td>Cancer</td></tr>
+                <tr><td>IX</td><td>Leo</td></tr>
+                <tr><td>X (MC)</td><td>Virgo</td></tr>
+                <tr><td>XI</td><td>Libra</td></tr>
+                <tr><td>XII</td><td>Scorpio</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- NATAL READING -->
+      <div class="natal-reading-wrap">
+
+        <div class="natal-reading-header">
+          <div class="natal-reading-eyebrow">✦ Natal Reading</div>
+          <h2 class="natal-reading-title">The Blueprint of Emily</h2>
+          <p class="natal-reading-sub">Born May 22, 1995 · 8:47 PM EDT · Abington, Pennsylvania</p>
+          <div class="natal-reading-divider"></div>
+        </div>
+
+        <!-- BIG THREE -->
+        <div class="section-title" style="margin-top:0">The Big Three</div>
+        <div class="nr-big-three">
+
+          <div class="nr-placement-card">
+            <div class="nr-placement-top">
+              <span class="nr-glyph" style="color:#e8d5a3">☉</span>
+              <div class="nr-placement-label">
+                <div class="nr-placement-name">Sun in Gemini</div>
+                <div class="nr-placement-degree">1°27' · 7th House</div>
+              </div>
+            </div>
+            <p class="nr-text">At the very first degree of Gemini, Emily's Sun carries all the raw, unformed vitality of a sign just beginning — a soul arriving at the world with fresh eyes, hungry for input, connection, and exchange. Gemini Suns are natural communicators, pattern-recognizers, and bridge-builders between seemingly unrelated worlds. Emily possesses a quick, restless intelligence that processes experience through language and dialogue, always gathering data, always asking the next question. There's a dual nature here that isn't inconsistency — it's range. She can hold contradictions with unusual ease and move fluidly between different circles, different roles, different versions of herself. Placed in the 7th house of partnerships and one-on-one relating, her Sun expresses most vividly through close relationships. She comes alive in conversation, in collaboration, in the charged space between herself and another. Her sense of self is deeply intertwined with who she is with — a strength when her relationships are vital and stimulating, a challenge when she loses her own thread in someone else's.</p>
+            <div class="nr-key-phrase">Key theme: <em>Identity crystallized through connection and conversation</em></div>
+          </div>
+
+          <div class="nr-placement-card">
+            <div class="nr-placement-top">
+              <span class="nr-glyph" style="color:#c8d8f0">☽</span>
+              <div class="nr-placement-label">
+                <div class="nr-placement-name">Moon in Pisces</div>
+                <div class="nr-placement-degree">20°15' · 4th House</div>
+              </div>
+            </div>
+            <p class="nr-text">The Moon in Pisces is one of the most emotionally porous placements in the zodiac — a soul that feels everything and everyone, often without a clear boundary between what belongs to her and what she's absorbed from the room. Emily's inner world is oceanic: vast, imagistic, deeply compassionate, and sometimes overwhelming in its depth. She processes emotion through feeling rather than analysis, and she has an almost psychic attunement to the emotional undercurrents of any environment. In the 4th house — the house of home, roots, and private life — this Moon speaks to a woman whose home is her sanctuary, her refuge, and the container for her deepest emotional life. She needs peace and beauty in her domestic environment to feel emotionally regulated. Family history runs deep in her psyche, and early conditioning, particularly around the mother figure, carries significant emotional weight. Her sensitivity is her superpower and her vulnerability in equal measure: she can hold space for others' pain with rare grace, but needs to be intentional about not absorbing what isn't hers to carry.</p>
+            <div class="nr-key-phrase">Key theme: <em>A boundless inner world that needs a beautiful, safe container</em></div>
+          </div>
+
+          <div class="nr-placement-card">
+            <div class="nr-placement-top">
+              <span class="nr-glyph" style="color:#e8a060">↑</span>
+              <div class="nr-placement-label">
+                <div class="nr-placement-name">Sagittarius Rising</div>
+                <div class="nr-placement-degree">11°42' · 1st House</div>
+              </div>
+            </div>
+            <p class="nr-text">A Sagittarius Ascendant gives Emily an outer manner that is warm, direct, and immediately expansive — she walks into a room and expands it. There is an energy of openness, optimism, and enthusiasm that others feel before they know anything else about her. She presents as someone who has opinions, who is going somewhere, who believes in something. Jupiter rules this Ascendant, and it sits in Sagittarius in her 1st house — an unusually powerful placement that reinforces her natural philosophical bent, her love of freedom, and her desire to explore ideas, places, and meanings beyond the ordinary. The Sag Rising can mask depths: the Pisces Moon's vast inner life operates behind an outward persona that can seem breezy and adventurous. She may be much more sensitive than she appears. This rising also blesses her with physical presence — a natural exuberance in her bearing, an openness in her face, a quality of warmth that makes others immediately comfortable.</p>
+            <div class="nr-key-phrase">Key theme: <em>A warm, adventurous presence that opens the world to her — and to others</em></div>
+          </div>
+
+        </div>
+
+        <!-- INNER PLANETS -->
+        <div class="section-title">Inner Planets</div>
+        <div class="nr-inner-grid">
+
+          <div class="nr-inner-card">
+            <div class="nr-inner-top">
+              <span class="nr-glyph-sm" style="color:#a0c8a0">☿</span>
+              <div>
+                <div class="nr-inner-name">Mercury in Gemini</div>
+                <div class="nr-inner-degree">18°17' · 7th House</div>
+              </div>
+            </div>
+            <p class="nr-inner-text">Mercury in its home sign is a mind that runs at speed. Emily's thinking is associative, fast-moving, and brilliantly lateral — she sees connections between things others don't notice, synthesizes information quickly, and communicates with ease and wit. In the 7th house, her mental energy is most activated in dialogue: she thinks best out loud, in exchange, with a worthy interlocutor. Writing, teaching, podcasting, journalism, or any medium that translates thought into shared language suits her well. The caution: a mind this quick can scatter. Depth requires deliberately slowing down and choosing what to commit to.</p>
+          </div>
+
+          <div class="nr-inner-card">
+            <div class="nr-inner-top">
+              <span class="nr-glyph-sm" style="color:#e8a0b8">♀</span>
+              <div>
+                <div class="nr-inner-name">Venus in Taurus</div>
+                <div class="nr-inner-degree">7°21' · 6th House</div>
+              </div>
+            </div>
+            <p class="nr-inner-text">Venus is exquisitely at home in Taurus, the sign of its rulership — and here it grants Emily a deep, sensual, and enduring approach to love, beauty, and pleasure. She loves slowly and loyally. Her aesthetic is refined and grounded: quality over quantity, beauty that can be touched and tasted, environments that soothe the senses. In the 6th house, Venus beautifies her relationship with work and daily rhythm — she flourishes when her work environment is aesthetically pleasing and her daily routines feel nourishing. Love may sometimes arrive through the workplace or shared daily life. She values stability and security in partnership above all, and her love language tends toward acts of service and physical presence.</p>
+          </div>
+
+          <div class="nr-inner-card">
+            <div class="nr-inner-top">
+              <span class="nr-glyph-sm" style="color:#e07070">♂</span>
+              <div>
+                <div class="nr-inner-name">Mars in Leo</div>
+                <div class="nr-inner-degree">28°49' · 9th House</div>
+              </div>
+            </div>
+            <p class="nr-inner-text">Mars in Leo at the anaretic 29th degree — a degree of intensity and urgency — gives Emily's drive and ambition a distinctly dramatic, creative, and performative quality. She pursues what she wants with flair and confidence, and she wants to be recognized for it. This is not a quiet Mars. In the 9th house, her energy is channeled toward the pursuit of meaning: philosophy, higher education, travel, publishing, spiritual seeking. She fights for her beliefs and convictions with real passion. The 29th degree of Leo brings a sense that something important must be completed or expressed through her creative power before moving on — a deep urgency around being seen, heard, and leaving a mark through her own distinctive vision.</p>
+          </div>
+
+        </div>
+
+        <!-- OUTER PLANETS & THEMES -->
+        <div class="section-title">Outer Planets & Soul Themes</div>
+        <div class="nr-soul-grid">
+
+          <div class="nr-soul-card">
+            <div class="nr-soul-header">
+              <span class="nr-glyph-sm" style="color:#e8b44a">♃</span>
+              <div class="nr-soul-title">Jupiter in Sagittarius R · 1st House</div>
+            </div>
+            <p class="nr-inner-text">Jupiter in its home sign of Sagittarius, stationed retrograde in the 1st house — the chart's most personal angle — is one of Emily's most powerful and defining placements. This is a placement of the philosopher, the seeker, the teacher who never stops being a student. Jupiter here bestows a natural optimism, a broad worldview, and an almost constitutional faith that things will work out and that the universe is fundamentally generous. Retrograde, this energy is internalized: the expansiveness doesn't broadcast outward as loudly as it might, but runs as a deep inner conviction that guides her choices. She may underestimate her own wisdom while others clearly see her as a person of breadth and vision. She is drawn to the question of meaning above all else — why are we here, what matters, what's the bigger picture?</p>
+          </div>
+
+          <div class="nr-soul-card">
+            <div class="nr-soul-header">
+              <span class="nr-glyph-sm" style="color:#7ecdc4">♄</span>
+              <div class="nr-soul-title">Saturn in Pisces · 4th House</div>
+            </div>
+            <p class="nr-inner-text">Saturn in Pisces asks Emily to build something lasting out of the most intangible materials: faith, compassion, imagination, and spiritual truth. There is a serious undertone to her inner emotional life — a sense of responsibility that can sometimes feel like a weight, a tendency to take on the emotional labor of those she loves. Her deepest lessons involve learning to hold boundaries without losing her sensitivity, to build real structures in her home and inner life without hardening herself against the mystery. In the 4th house, family patterns — especially inherited emotional dynamics — are significant karmic material. The work here is to find the home within herself that no external circumstance can disrupt.</p>
+          </div>
+
+          <div class="nr-soul-card">
+            <div class="nr-soul-header">
+              <span class="nr-glyph-sm" style="color:#90c8e0">♅</span>
+              <div class="nr-soul-title">Uranus in Aquarius R · 3rd House</div>
+            </div>
+            <p class="nr-inner-text">Uranus at the very first degree of Aquarius — its own sign — retrograde in the 3rd house of mind and communication marks Emily as part of a generation born at a genuine threshold of human intellectual evolution. Her mind operates outside conventional categories. She thinks in systems, in networks, in unconventional frameworks. Communication for her is both a tool of liberation and a medium of revolution — she has the capacity to disrupt how others think simply by articulating things differently. Retrograde suggests this brilliance is largely internal: she may not always recognize her own originality, even as others find her ideas genuinely ahead of their time.</p>
+          </div>
+
+          <div class="nr-soul-card">
+            <div class="nr-soul-header">
+              <span class="nr-glyph-sm" style="color:#c09060">♇</span>
+              <div class="nr-soul-title">Pluto in Scorpio R · 12th House</div>
+            </div>
+            <p class="nr-inner-text">Pluto in Scorpio retrograde in the 12th house of the unconscious is perhaps the most privately profound placement in Emily's chart. The 12th house operates below the threshold of ordinary awareness — it is the realm of the psyche's hidden archives, of spiritual experience, of what is dissolving and what is being prepared in the dark for eventual emergence. Pluto here gives Emily a connection to depths that most people never access. She carries ancestral material, generational shadow, and an innate understanding of transformation and loss that runs far beneath the surface of her everyday personality. The gift: extraordinary psychological insight, spiritual depth, and the capacity to hold space for others' darkest material without flinching. The challenge: integrating her own depth rather than experiencing it as a private darkness that isolates her.</p>
+          </div>
+
+        </div>
+
+        <!-- NORTH NODE & ASPECTS -->
+        <div class="section-title">North Node & Defining Aspects</div>
+        <div class="nr-aspects-wrap">
+
+          <div class="nr-aspect-feature">
+            <div class="nr-aspect-feature-header">
+              <span class="nr-glyph-sm" style="color:#d4b07f">☊</span>
+              <div>
+                <div class="nr-inner-name">North Node in Scorpio · 12th House</div>
+                <div class="nr-inner-degree">Soul's Direction</div>
+              </div>
+            </div>
+            <p class="nr-inner-text">Emily's North Node in Scorpio in the 12th house points toward a soul path of deep transformation, spiritual surrender, and the courageous act of diving below the surface of life's appearances to find what is truly real. She is moving away from a Taurus South Node's comfort with stability, security, and the tangible — and being called toward the radical trust of letting go, of merging with something larger than the individual self, of sitting with loss and mystery and discovering that the most profound things cannot be owned or controlled. This is a path of spiritual initiation and psychological depth. The 12th house setting suggests that her most important growth happens in solitude, in dreams, in the liminal spaces where ordinary consciousness dissolves. She is here, in part, to become a midwife for invisible processes — her own and others'.</p>
+          </div>
+
+          <div class="nr-aspects-list">
+            <div class="nr-aspect-row">
+              <div class="nr-aspect-planets"><span style="color:#e8d5a3">☉</span> <span class="nr-aspect-sym challenging-asp">□</span> <span style="color:#e07070">♂</span></div>
+              <div class="nr-aspect-detail"><strong>Sun square Mars (2°39')</strong> — A driving tension between self-expression and assertion. Enormous creative and physical energy, but a tendency to push too hard, burn too bright, and clash with others or herself. When channeled deliberately, this aspect produces real stamina and courage.</div>
+            </div>
+            <div class="nr-aspect-row">
+              <div class="nr-aspect-planets"><span style="color:#e8d5a3">☉</span> <span class="nr-aspect-sym easy-asp">△</span> <span style="color:#90c8e0">♅</span></div>
+              <div class="nr-aspect-detail"><strong>Sun trine Uranus (1°07')</strong> — A natural gift for originality, adaptability, and thinking outside every box. She is genuinely innovative, and change doesn't frighten her the way it does others. This aspect makes her exciting to be around — someone who electrifies a room without trying to.</div>
+            </div>
+            <div class="nr-aspect-row">
+              <div class="nr-aspect-planets"><span style="color:#e8d5a3">☉</span> <span class="nr-aspect-sym challenging-asp">☍</span> <span style="color:#c09060">♇</span></div>
+              <div class="nr-aspect-detail"><strong>Sun opposition Pluto (2°17')</strong> — One of the chart's most intense aspects. Power, transformation, and intensity run through everything Emily does. Relationships and encounters tend toward the profound and the transformative rather than the comfortable. She has faced experiences that have fundamentally changed her — and will again. The gift is an extraordinary depth of character.</div>
+            </div>
+            <div class="nr-aspect-row">
+              <div class="nr-aspect-planets"><span style="color:#c8d8f0">☽</span> <span class="nr-aspect-sym conj-asp">☌</span> <span style="color:#7ecdc4">♄</span></div>
+              <div class="nr-aspect-detail"><strong>Moon conjunct Saturn (2°55')</strong> — The Moon and Saturn together speak to emotional self-discipline, sometimes learned through early experiences of limitation, responsibility, or emotional distance. Emily's feelings have weight and endurance — she doesn't feel lightly. This aspect breeds tremendous emotional maturity, reliability, and the capacity to be truly present for others in difficulty.</div>
+            </div>
+            <div class="nr-aspect-row">
+              <div class="nr-aspect-planets"><span style="color:#e8b44a">♃</span> <span class="nr-aspect-sym conj-asp">☌</span> <span style="color:#e8a060">ASC</span></div>
+              <div class="nr-aspect-detail"><strong>Jupiter conjunct Ascendant (2°52')</strong> — Perhaps the most immediately visible gift in the chart. Jupiter right on the Ascendant gives Emily a natural aura of warmth, confidence, and expansive welcome. People feel expanded simply by being in her presence. This placement also confers a degree of good fortune through her personal presence and how she is received in the world.</div>
+            </div>
+            <div class="nr-aspect-row">
+              <div class="nr-aspect-planets"><span style="color:#e07070">♂</span> <span class="nr-aspect-sym challenging-asp">□</span> <span style="color:#c09060">♇</span></div>
+              <div class="nr-aspect-detail"><strong>Mars square Pluto (0°22')</strong> — An extremely tight, powerful aspect: will, desire, and transformation locked in perpetual tension. This can manifest as obsessive drive, intense power dynamics in relationships, and transformative encounters that feel fated. Positively integrated, it gives Emily an almost superhuman capacity for purposeful action and radical reinvention.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- THE HOUSES -->
+        <div class="section-title">The Twelve Houses</div>
+        <p class="nr-houses-intro">The houses divide the sky into twelve life arenas — the stage upon which Emily's planets play out their stories. Each house carries a universal theme, and the sign on its cusp reveals the particular flavor, style, and challenge she brings to that domain of life.</p>
+
+        <div class="nr-houses-grid">
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">I</span>
+              <span class="nr-house-badge">ASC</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Sagittarius Rising</div>
+              <div class="nr-house-theme">Self · Identity · First Impressions · The Body</div>
+              <p class="nr-house-text">The 1st house is the mask we wear into the world — the first impression, the physical body, the instinctive self-presentation. With Sagittarius here, Emily enters every room as an explorer: warm, direct, philosophically curious, and radiating an aura of expansive welcome. She is perceived as optimistic, adventurous, and open-minded even before she speaks. Jupiter's rulership of this cusp — and its placement right in this house — doubles the effect, giving her a natural charisma and a touch of fortune that others sense as magnetic presence. This is who people meet first; the deeper waters of her Pisces Moon and Scorpio undercurrent often come as a genuine surprise.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">II</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Capricorn on the 2nd</div>
+              <div class="nr-house-theme">Money · Possessions · Self-Worth · Material Security</div>
+              <p class="nr-house-text">The 2nd house governs everything we own, earn, and value — including our sense of personal worth. Capricorn here gives Emily a serious, disciplined, and long-term orientation to finances. She doesn't spend frivolously; she builds. Money feels most secure when it is earned through genuine effort and structured carefully. Neptune sits in Capricorn in this house, adding a spiritual or idealistic dimension to her relationship with resources — she may be drawn to work that feels meaningful over merely lucrative, and may experience periods of financial fog or disillusionment that ultimately refine her values. Her sense of self-worth is earned slowly and through demonstration, not granted freely.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">III</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Aquarius on the 3rd</div>
+              <div class="nr-house-theme">Communication · Siblings · Local World · The Mind in Motion</div>
+              <p class="nr-house-text">The 3rd house is the domain of daily communication, the immediate environment, siblings, short journeys, and the restless, curious mind that connects things. Aquarius here makes Emily's communication style original, unconventional, and often ahead of the room — she says things people haven't thought of yet and makes conceptual leaps that can feel electric to receptive minds. Uranus sits here retrograde at 0° Aquarius, intensifying this quality: her mind is a genuinely unusual instrument. She may have had an unconventional relationship with early education or siblings, and her local community is likely to be diverse and intellectually stimulating. Writing and speaking in her own original voice is a natural strength.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">IV</span>
+              <span class="nr-house-badge">IC</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Pisces on the 4th</div>
+              <div class="nr-house-theme">Home · Family · Roots · The Private Self · Ancestry</div>
+              <p class="nr-house-text">The 4th house is the foundation — the private world, the home, the family of origin, and the deep psychological roots that quietly shape everything above. Pisces here gives Emily's inner domestic world a quality of fluidity, emotional depth, and spiritual seeking. The ideal home is not just a physical space but a sanctuary — soft, beautiful, spiritually resonant, a place where the outside world cannot reach. Moon conjunct Saturn sits here: her emotional life has weight, endurance, and perhaps an early lesson in responsibility or loss that has deepened her considerably. Family patterns — particularly inherited emotional dynamics — run deep and are significant material for healing. Neptune also transits this house currently, emphasizing the dissolution of old domestic structures and the gradual emergence of a truer, more nourishing foundation.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">V</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Aries on the 5th</div>
+              <div class="nr-house-theme">Creativity · Romance · Play · Children · Self-Expression</div>
+              <p class="nr-house-text">The 5th house is where we play, create, love, and express ourselves for the pure joy of it — the arena of romance, artistic creativity, pleasure, and children. Aries on this cusp gives Emily's creative self-expression a fiery, bold, and pioneering quality. When she creates, she initiates — she goes first, she takes the risk, she colors outside the lines. Romance, too, carries an Aries spark: she is drawn toward excitement, pursuit, and the electric charge of a new beginning. Chiron moves into this house in April 2026, beginning a healing journey around the very wounds — perhaps from early childhood — that may have dampened her free creative expression. The process of reclaiming her right to play, to be seen, to create without justification, is one of the year's most meaningful currents.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">VI</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Taurus on the 6th</div>
+              <div class="nr-house-theme">Health · Daily Routines · Work · Service · The Body's Rhythms</div>
+              <p class="nr-house-text">The 6th house governs the daily craft of living — health habits, work routines, service to others, and the relationship between body and environment. Taurus here means Emily's wellbeing is deeply tied to sensory nourishment: regular meals, physical comfort, time in nature, and daily rhythms that feel grounding and pleasurable rather than rushed or chaotic. Venus rules this cusp and sits here in its home sign — a beautiful placement for work that involves beauty, craft, or genuine care for others. She thrives in work environments that are aesthetically pleasant and where her contributions are tangibly valued. Uranus transits this house all year, disrupting routines and inviting a more flexible, experimental approach to daily life and wellness.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">VII</span>
+              <span class="nr-house-badge">DSC</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Gemini on the 7th</div>
+              <div class="nr-house-theme">Partnership · Marriage · One-on-One Relationships · Open Enemies</div>
+              <p class="nr-house-text">The 7th house describes the qualities we seek — and sometimes project — in our closest partnerships. Gemini here means Emily is drawn to partners who are intellectually stimulating, communicative, and multi-faceted. She needs mental chemistry as much as emotional chemistry in her most significant relationships. The Sun and Mercury both sit in this house, making partnership one of the most central and identity-defining arenas of her life. She comes most fully alive in the charged space of a vital one-on-one connection. The risk: losing herself in others' narratives, or seeking stimulation so constantly that depth is sacrificed. The gift: she brings all of her intelligence and curiosity to her relationships, making her a genuinely engaging and enlivening partner.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">VIII</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Cancer on the 8th</div>
+              <div class="nr-house-theme">Transformation · Shared Resources · Intimacy · Death & Rebirth · The Occult</div>
+              <p class="nr-house-text">The 8th house is one of the most profound and least comfortable territories in the chart — the domain of deep intimacy, shared finances, psychological transformation, and everything that lies beyond the ordinary surface of life. Cancer here gives Emily's relationship with loss, merger, and transformation a deeply feeling, protective, and emotionally attuned quality. She navigates the depths not coldly but tenderly, with the protective instincts of Cancer intact. Jupiter transits this house through October 2026, bringing an unusual period of expansion through shared resources, possible inheritance or legacy, and metaphysical exploration — she may find genuine abundance through what she allows herself to receive from others, and through diving into life's deeper mysteries.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">IX</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Leo on the 9th</div>
+              <div class="nr-house-theme">Philosophy · Higher Learning · Travel · Beliefs · The Search for Meaning</div>
+              <p class="nr-house-text">The 9th house is the great expanse — the domain of philosophy, religion, higher education, foreign travel, and the pursuit of ultimate meaning. Leo here gives Emily's search for truth a creative, personal, and theatrical quality. She doesn't arrive at her beliefs abstractly; she arrives at them through experience, through story, through the living drama of her own life. She is drawn to wisdom traditions that resonate with the heart as much as the intellect. Mars sits in Leo in this house at the anaretic 29th degree — a burning urgency around her beliefs, her creative philosophy, and her desire to leave a meaningful mark through her convictions. Travel and encounters with different cultures are profoundly enlivening for her, feeding both her Sagittarius rising and this fiery 9th house.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">X</span>
+              <span class="nr-house-badge">MC</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Virgo on the 10th — MC 26°31'</div>
+              <div class="nr-house-theme">Career · Public Reputation · Life Purpose · Contribution to the World</div>
+              <p class="nr-house-text">The Midheaven — the highest point of the chart — represents the public face, the vocational calling, and the mark left on the world. Virgo on the MC gives Emily's public life and career a quality of craftsmanship, precision, service, and practical intelligence. She is at her most professionally visible when she is doing something that is genuinely useful, excellently executed, and in service to others. There is a calling here toward work that involves analysis, writing, healing, research, or careful attention to detail — work where the standard she holds herself to is high and the quality of what she produces matters deeply. Mercury rules this MC, linking her mind and her communication directly to her life's work. At 26°, the MC carries a sense of earned wisdom and mature responsibility in whatever she brings into the world.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">XI</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Libra on the 11th</div>
+              <div class="nr-house-theme">Friends · Community · Groups · Hopes & Dreams · Collective Purpose</div>
+              <p class="nr-house-text">The 11th house governs the wider social world — friendships, groups, networks, and the larger collective purpose one contributes to. Libra here gives Emily's social world a quality of refinement, balance-seeking, and relationship-centeredness. She gravitates toward communities built around ideas, beauty, justice, or shared intellectual values — and within those communities, she is naturally skilled at mediating, connecting people, and creating harmony. Her friendships tend to be thoughtful, reciprocal, and based on genuine intellectual and aesthetic affinity. She is drawn to collaborative creative or social projects, and may find that some of her most meaningful contributions happen through collective endeavor rather than solo achievement.</p>
+            </div>
+          </div>
+
+          <div class="nr-house-card">
+            <div class="nr-house-number-wrap">
+              <span class="nr-house-roman">XII</span>
+            </div>
+            <div class="nr-house-content">
+              <div class="nr-house-title">Scorpio on the 12th</div>
+              <div class="nr-house-theme">The Unconscious · Hidden Life · Solitude · Spiritual Depth · What Dissolves</div>
+              <p class="nr-house-text">The 12th house is the most veiled territory in the chart — the realm of the unconscious, of retreat and solitude, of what operates below the surface of ordinary awareness, and of what must eventually dissolve so that something truer can emerge. Scorpio here is an intensely powerful and private placement. Emily's deepest emotional and spiritual processing happens in solitude, in the dark, in the liminal hours before sleep. Pluto sits here retrograde — the lord of transformation dwelling in the house of the hidden — giving her access to psychological depths that most people never encounter in themselves. The North Node in Scorpio also sits in this house, making the 12th house not peripheral but central to her soul's purpose: she is here, in part, to descend, to transform, and to bring something back from the depths that serves others' healing as well as her own.</p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- SYNTHESIS -->
+        <div class="nr-synthesis">
+          <div class="nr-synthesis-glyph">✦</div>
+          <div class="nr-synthesis-title">The Chart as a Whole</div>
+          <p class="nr-synthesis-text">Emily's chart tells the story of a soul of unusual depth wearing a deceptively light-footed exterior. The Sagittarius rising and Gemini Sun present as an open, curious, communicative, and adventurous person — and all of that is real. But beneath this expansive surface lies a Pisces Moon conjunct Saturn in the 4th, a Pluto opposition to the Sun, a North Node in the 12th, and a Scorpio stellium of Pluto and the North Node — all pointing toward an inner life of extraordinary depth, transformative experience, and spiritual purpose that most people around her will never fully see.</p>
+          <p class="nr-synthesis-text">There is a central tension in this chart between the Gemini-Sagittarian urge to move freely across the surface of life — curious, social, seeking — and the Scorpio-Pisces undercurrent that pulls toward depth, dissolution, and the hidden truths beneath appearances. Her work is to honor both: to bring the depth up into her communication, her relationships, and her creative work rather than keeping them in separate compartments.</p>
+          <p class="nr-synthesis-text">Jupiter conjunct the Ascendant in Sagittarius is a profound blessing: whatever difficulty her chart contains, she carries within her a genuine, abiding faith in life's generosity and meaning. This is the quality that holds everything together — and the quality that, when she claims it fully, makes her someone others turn toward for light.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- PAGE: THIS WEEK -->
+    <div id="page-week" class="tab-page">
+
+      <div class="week-nav">
+        <button class="month-nav-btn" onclick="shiftWeek(-1)">‹</button>
+        <div class="month-nav-center">
+          <div id="week-label" class="month-label"></div>
+          <button class="month-today-btn" onclick="goToCurrentWeek()">This Week</button>
+        </div>
+        <button class="month-nav-btn" onclick="shiftWeek(1)">›</button>
+      </div>
+
+      <!-- Week day strip -->
+      <div id="week-day-strip" class="week-day-strip"></div>
+
+      <!-- Week overview narrative -->
+      <div id="week-overview" class="month-overview"></div>
+
+      <!-- Events this week -->
+      <div class="month-events-header">
+        <span id="week-events-title" class="month-events-title"></span>
+      </div>
+      <div id="week-events-list" class="month-events-list"></div>
+      <div id="week-no-events" class="month-no-events" style="display:none">
+        No major transiting events fall in this week.
+      </div>
+
+      <!-- Oracle readings this week -->
+      <div id="week-readings-section" style="display:none">
+        <div class="month-events-header" style="margin-top:40px">
+          <span id="week-readings-title" class="month-events-title"></span>
+        </div>
+        <div id="week-readings-list" class="readings-log"></div>
+      </div>
+
+    </div>
+
+    <!-- PAGE: THIS MONTH -->
+    <div id="page-month" class="tab-page">
+
+      <!-- Month nav -->
+      <div class="month-nav">
+        <button class="month-nav-btn" onclick="shiftMonth(-1)">‹</button>
+        <div class="month-nav-center">
+          <div id="month-label" class="month-label"></div>
+          <button class="month-today-btn" onclick="goToCurrentMonth()">Today</button>
+        </div>
+        <button class="month-nav-btn" onclick="shiftMonth(1)">›</button>
+      </div>
+
+      <!-- Overview narrative -->
+      <div id="month-overview" class="month-overview"></div>
+
+      <!-- Mini calendar -->
+      <div class="month-cal-wrap">
+        <div class="month-cal-header">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span>
+          <span>Thu</span><span>Fri</span><span>Sat</span>
+        </div>
+        <div id="month-cal-grid" class="month-cal-grid"></div>
+      </div>
+
+      <!-- Events this month -->
+      <div class="month-events-header">
+        <span id="month-events-title" class="month-events-title"></span>
+      </div>
+      <div id="month-events-list" class="month-events-list"></div>
+      <div id="month-no-events" class="month-no-events" style="display:none">
+        No major transiting events fall in this month.
+      </div>
+
+      <!-- Oracle readings for this month -->
+      <div id="month-readings-section" style="display:none">
+        <div class="month-events-header" style="margin-top:40px">
+          <span id="month-readings-title" class="month-events-title"></span>
+        </div>
+        <div id="month-readings-list" class="readings-log"></div>
+      </div>
+
+    </div>
+
+    <!-- PAGE: YEAR READING -->
+    <div id="page-year" class="tab-page">
+      <div class="section-title">The Year at a Glance</div>
+      <div class="overview-grid" id="overview-grid"></div>
+
+      <div class="section-title">Background Planetary Themes</div>
+      <div class="summary-grid" id="planet-grid"></div>
+
+      <div class="section-title">Transiting Events Timeline</div>
+      <div class="filter-bar">
+        <span class="filter-label">Filter:</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="positive">✦ Uplifting</button>
+        <button class="filter-btn" data-filter="challenging">⚡ Challenging</button>
+        <button class="filter-btn" data-filter="transformative">🔮 Transformative</button>
+        <button class="filter-btn" data-filter="healing">💙 Healing</button>
+      </div>
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <!-- PAGE: DAILY SKY -->
+    <div id="page-daily" class="tab-page active">
+
+      <!-- Date/Time Picker -->
+      <div class="ds-picker-wrap">
+        <div class="ds-picker-row">
+          <div class="ds-field">
+            <label class="ds-field-label" for="sky-date">📅 Date</label>
+            <input type="date" id="sky-date" class="ds-input" />
+          </div>
+          <div class="ds-field">
+            <label class="ds-field-label" for="sky-time">🕐 Time</label>
+            <input type="time" id="sky-time" class="ds-input" />
+          </div>
+          <div class="ds-actions">
+            <button class="ds-calc-btn" onclick="refreshSky()">✦ Calculate</button>
+            <button class="ds-now-btn" onclick="resetToNow()">Live Now</button>
+          </div>
+        </div>
+        <div id="sky-active-label" class="ds-active-label"></div>
+      </div>
+
+      <!-- Loading -->
+      <div id="sky-loading" class="ds-loading" style="display:none">
+        <span class="sky-pulse">✦</span> Calculating planetary positions…
+      </div>
+
+      <!-- Two-column layout: planets left, aspects right -->
+      <div class="ds-main-grid" id="ds-main-grid" style="display:none">
+
+        <!-- Left: Planet positions -->
+        <details class="ds-collapsible">
+          <summary class="ds-col-header">
+            <span class="ds-col-title">Planetary Positions</span>
+            <span class="ds-chevron">›</span>
+          </summary>
+          <div id="sky-grid" class="ds-planet-list"></div>
+        </details>
+
+        <!-- Right: Active aspects -->
+        <details class="ds-collapsible" id="sky-aspects">
+          <summary class="ds-col-header">
+            <span class="ds-col-title">Active Aspects</span>
+            <div class="ds-legend">
+              <span class="ds-legend-item"><span class="ds-dot easy"></span>Easy</span>
+              <span class="ds-legend-item"><span class="ds-dot hard"></span>Hard</span>
+              <span class="ds-legend-item"><span class="ds-dot neutral"></span>Neutral</span>
+            </div>
+            <span class="ds-chevron">›</span>
+          </summary>
+          <div id="sky-aspects-list" class="ds-aspects-list"></div>
+        </details>
+
+      </div>
+
+      <!-- Oracle -->
+      <div class="ds-oracle-wrap">
+        <div class="ds-oracle-header">
+          <div class="ds-oracle-title-block">
+            <span class="ds-oracle-glyph">✦</span>
+            <div>
+              <div class="ds-oracle-title">Ask the Oracle</div>
+              <div class="ds-oracle-sub">The sky above, read against Emily's natal chart</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Collapsible context -->
+        <details class="ds-context-details">
+          <summary class="ds-context-summary">View oracle context ↓</summary>
+          <div class="ds-context-grid" id="oracle-context-grid">
+            <div class="ds-context-col">
+              <div class="ds-context-sub">Transiting Planets</div>
+              <div id="oracle-transit-list" class="oracle-transit-list"></div>
+            </div>
+            <div class="ds-context-col">
+              <div class="ds-context-sub">Active Aspects</div>
+              <div id="oracle-aspect-list" class="oracle-aspect-list"></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- Suggestions -->
+        <div class="ds-suggestions">
+          <button class="ds-suggest" onclick="useSuggestion(this)">What energy should I watch out for today?</button>
+          <button class="ds-suggest" onclick="useSuggestion(this)">Is now a good time to make a big decision?</button>
+          <button class="ds-suggest" onclick="useSuggestion(this)">What does today say about my career?</button>
+          <button class="ds-suggest" onclick="useSuggestion(this)">How are my relationships looking right now?</button>
+          <button class="ds-suggest" onclick="useSuggestion(this)">What should I focus on this week?</button>
+        </div>
+
+        <!-- Input -->
+        <div class="ds-input-row">
+          <textarea id="oracle-input" class="ds-textarea" placeholder="Ask the Oracle anything about this moment…" rows="2"></textarea>
+          <button class="ds-ask-btn" id="oracle-btn" onclick="askOracle()">
+            <span class="ds-ask-icon">✦</span>
+            <span>Ask</span>
+          </button>
+        </div>
+
+        <!-- Error -->
+        <div id="oracle-error" class="oracle-error" style="display:none"></div>
+
+        <!-- Loading -->
+        <div id="oracle-loading" class="oracle-loading" style="display:none">
+          <span class="oracle-loading-dots"><span>✦</span><span>✦</span><span>✦</span></span>
+          <span class="oracle-loading-text">Consulting the stars…</span>
+        </div>
+
+        <!-- Response -->
+        <div id="oracle-response-wrap" class="ds-response-wrap" style="display:none">
+          <div class="ds-response-header">
+            <span class="ds-response-label">✦ The Oracle Speaks</span>
+            <span id="oracle-date-label" class="ds-response-date"></span>
+          </div>
+          <div id="oracle-response" class="ds-response-text"></div>
+        </div>
+      </div>
+
+      <!-- Saved Readings -->
+      <div class="ds-readings-header">
+        <span class="ds-readings-title">Saved Readings</span>
+        <span id="readings-count" class="readings-count-badge"></span>
+      </div>
+      <p id="readings-empty" class="readings-empty">No readings saved yet. Ask the Oracle something to get started.</p>
+      <div id="readings-log" class="readings-log"></div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── TAB NAVIGATION ──
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.tab-btn[data-tab="${tab}"]`).classList.add('active');
+  document.getElementById(`page-${tab}`).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (tab === 'month') renderMonth();
+  if (tab === 'week') renderWeek();
+}
+
+// ── THIS MONTH ──
+const MONTH_NAMES = ['January','February','March','April','May','June',
+                     'July','August','September','October','November','December'];
+
+// Per-month narratives (keyed as YYYY-M, 1-indexed month)
+const MONTH_NARRATIVES = {
+  '2026-3': `<strong>March 2026</strong> opens with two intense transits arriving together. Chiron squares your natal Neptune (Mar 26) — a period of spiritual questioning and disillusionment — while Uranus squares your Mars (Mar 4–22), bringing restless, frustrated energy. Channel that energy physically. Stay grounded, avoid rash decisions, and trust that clarity is coming.`,
+  '2026-4': `<strong>April 2026</strong> is one of the most pivotal months of the year. Uranus opposes your Pluto (Apr 9), marking a real ending and beginning. Then Pluto squares your Nodes (Apr 14) — a karmic turning point — while Saturn trines your Ascendant (Apr 28), bringing strength and trustworthiness. Big shifts are unfolding; meet them with openness.`,
+  '2026-5': `<strong>May 2026</strong> is extraordinary. Uranus trines your Uranus (May 2) — claiming your authentic independence. Jupiter trines your Moon (May 10) — warmth and emotional expansion. Then the year's defining transit: Uranus conjuncts your Sun (May 21) — a personal awakening. Chiron trines your Mars (May 24) and Saturn trines Jupiter (May 25) complete a month of profound forward motion.`,
+  '2026-6': `<strong>June 2026</strong> brings a brief foggy spell (Jupiter opposite Neptune, Jun 7), but also a beautiful window of career power as Jupiter trines Pluto (Jun 26). Chiron's long square to Uranus begins — you're being asked to choose your priorities. Stay grounded in what truly matters.`,
+  '2026-7': `<strong>July 2026</strong> is complex: Jupiter opposes Uranus (Jul 1), stirring freedom versus obligation tensions, and then squares your Nodes (Jul 24) — social commitments feel overwhelming. But beneath the noise, an invitation to clear away what no longer serves is present. Respond thoughtfully, not reactively.`,
+  '2026-8': `<strong>August 2026</strong> is expansive and warm. Jupiter squares Venus early in the month (Aug 2), then pivots beautifully — Jupiter trines your Ascendant (Aug 9) and your natal Jupiter (Aug 22). Social grace, recognition, and genuine good fortune are the themes. Enjoy it.`,
+  '2026-9': `<strong>September 2026</strong> brings a second Saturn trine Jupiter (Sep 29) — another window of balanced, steady reward. Patience and wise planning pay off this month. The Chiron square Uranus transit is still active — keep making conscious choices about what to carry and what to release.`,
+  '2026-10': `<strong>October 2026</strong> is a threshold month. Jupiter moves into your 9th house on Oct 3, expanding your horizons around travel, philosophy, and broader adventures. Chiron trines your Mars (Oct 15) — another healing window around ambition and purpose. The foundations of the year's transformation are solidifying.`,
+  '2026-11': `<strong>November 2026</strong> brings the beginning of a long, stabilizing window: Saturn trines your Ascendant (Nov 8, continuing through January). Strength, self-confidence, and the attraction of the right people into your life are the themes. Let this grounding energy support you through the final months of the year.`,
+  '2026-12': `<strong>December 2026</strong> is a quieter month to consolidate and reflect. The Saturn trine Ascendant continues, and the Pluto square Nodes begins building again toward its February 2027 culmination. Use this month to prepare for the final turning point ahead.`,
+  '2027-1': `<strong>January 2027</strong> brings Chiron squaring Neptune again (Jan 6) — a return of the spiritual questioning from March 2026. This time you have more clarity to navigate it. Saturn trines your Ascendant continues (Jan 11). The Pluto square Nodes is building toward its Feb 3 peak — the year's final turning point is close.`,
+  '2027-2': `<strong>February 2027</strong> is the culminating month of this entire cycle. Pluto squares your Nodes (Feb 3) for the final time — completing the karmic turning point that began in spring 2026. Uranus conjuncts your Sun again (Feb 8) — the personal awakening reaches its fullest expression. Saturn trines Jupiter (Feb 16) closes the year with well-earned rewards. You have arrived.`,
+};
+
+const DEFAULT_NARRATIVE = `This month falls outside the detailed reading window (Mar 2026 – Mar 2027), but the major background transits — Uranus in your 6th house disrupting and reinvigorating your daily routines, Pluto transforming your values and finances, and the Uranus-Sun awakening — continue to shape your world.`;
+
+// Parse an event's primary date into { year, month (1-indexed), day }
+function parseEventDate(ev) {
+  // Handle dates like "Aug 21 & Oct 1, 2026" — use first date
+  const str = ev.date.split('&')[0].trim();
+  const d = new Date(str);
+  if (!isNaN(d)) return { year: d.getFullYear(), month: d.getMonth() + 1, day: d.getDate() };
+  return null;
+}
+
+// Also check if an event's duration window overlaps the given month
+function eventOverlapsMonth(ev, year, month) {
+  const primary = parseEventDate(ev);
+  if (primary && primary.year === year && primary.month === month) return true;
+
+  // Parse duration string: "Feb 19 – Mar 8, 2026 · Exact Feb 28"
+  const durMatch = ev.duration.match(/^(.+?)\s*·/);
+  if (!durMatch) return false;
+  const range = durMatch[1].trim();
+  const parts = range.split('–').map(s => s.trim());
+  if (parts.length < 2) return false;
+
+  // The end part usually has the year; start part may not
+  const endRaw = parts[1];
+  const endDate = new Date(endRaw);
+  if (isNaN(endDate)) return false;
+
+  // Reconstruct start — it may lack a year
+  let startRaw = parts[0];
+  if (!/\d{4}/.test(startRaw)) startRaw += ', ' + endDate.getFullYear();
+  const startDate = new Date(startRaw);
+  if (isNaN(startDate)) return false;
+
+  const targetStart = new Date(year, month - 1, 1);
+  const targetEnd   = new Date(year, month, 0); // last day of month
+  return startDate <= targetEnd && endDate >= targetStart;
+}
+
+let _currentMonthYear = new Date().getFullYear();
+let _currentMonthMonth = new Date().getMonth() + 1;
+
+function shiftMonth(delta) {
+  _currentMonthMonth += delta;
+  if (_currentMonthMonth > 12) { _currentMonthMonth = 1; _currentMonthYear++; }
+  if (_currentMonthMonth < 1)  { _currentMonthMonth = 12; _currentMonthYear--; }
+  renderMonth();
+}
+
+function goToCurrentMonth() {
+  const n = new Date();
+  _currentMonthYear  = n.getFullYear();
+  _currentMonthMonth = n.getMonth() + 1;
+  renderMonth();
+}
+
+function renderMonth() {
+  const year = _currentMonthYear;
+  const month = _currentMonthMonth;
+  const today = new Date();
+
+  // Label
+  document.getElementById('month-label').textContent =
+    `${MONTH_NAMES[month - 1]} ${year}`;
+
+  // Narrative
+  const key = `${year}-${month}`;
+  document.getElementById('month-overview').innerHTML =
+    MONTH_NARRATIVES[key] || DEFAULT_NARRATIVE;
+
+  // Filter events that touch this month
+  const monthEvents = data.events.filter(ev => eventOverlapsMonth(ev, year, month));
+
+  // ── Mini calendar ──
+  const firstDay = new Date(year, month - 1, 1).getDay(); // 0=Sun
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  // Build a map: day -> [event types]
+  const dayMap = {};
+  monthEvents.forEach(ev => {
+    const pd = parseEventDate(ev);
+    if (pd && pd.year === year && pd.month === month) {
+      if (!dayMap[pd.day]) dayMap[pd.day] = [];
+      dayMap[pd.day].push(ev.type);
+    }
+  });
+
+  const calGrid = document.getElementById('month-cal-grid');
+  let cells = '';
+
+  // Leading blanks from previous month
+  const prevMonthDays = new Date(year, month - 1, 0).getDate();
+  for (let i = 0; i < firstDay; i++) {
+    const d = prevMonthDays - firstDay + i + 1;
+    cells += `<div class="cal-day other-month"><div class="cal-day-num">${d}</div></div>`;
+  }
+
+  // This month's days
+  for (let d = 1; d <= daysInMonth; d++) {
+    const isToday = today.getFullYear() === year && today.getMonth() + 1 === month && today.getDate() === d;
+    const dots = (dayMap[d] || []).map(t => `<div class="cal-dot ${t}"></div>`).join('');
+    const hasEv = dayMap[d] ? 'has-event' : '';
+    cells += `<div class="cal-day ${hasEv} ${isToday ? 'today' : ''}">
+      <div class="cal-day-num">${d}</div>
+      ${dots ? `<div class="cal-event-dots">${dots}</div>` : ''}
+    </div>`;
+  }
+
+  // Trailing blanks
+  const totalCells = firstDay + daysInMonth;
+  const trailing = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let i = 1; i <= trailing; i++) {
+    cells += `<div class="cal-day other-month"><div class="cal-day-num">${i}</div></div>`;
+  }
+
+  calGrid.innerHTML = cells;
+
+  // ── Events list ──
+  const listEl = document.getElementById('month-events-list');
+  const noEvEl = document.getElementById('month-no-events');
+  const titleEl = document.getElementById('month-events-title');
+
+  titleEl.textContent = monthEvents.length
+    ? `${monthEvents.length} Transit${monthEvents.length > 1 ? 's' : ''} Active This Month`
+    : '';
+
+  if (!monthEvents.length) {
+    listEl.innerHTML = '';
+    noEvEl.style.display = 'block';
+    return;
+  }
+  noEvEl.style.display = 'none';
+
+  const typeLabel = { positive: 'Uplifting', challenging: 'Challenging', transformative: 'Transformative', healing: 'Healing' };
+
+  listEl.innerHTML = monthEvents.map((ev, i) => `
+    <div class="month-event-card ${ev.type}" style="animation-delay:${i * 0.06}s">
+      <div class="month-ev-meta">
+        <span class="month-ev-date">${ev.date}</span>
+        <span class="month-ev-badge ${ev.type}">${typeLabel[ev.type]}</span>
+      </div>
+      <div class="month-ev-title">${ev.title}</div>
+      <div class="month-ev-duration">${ev.duration}</div>
+      <div class="month-ev-body">${ev.description}</div>
+      <div class="month-ev-tip">${ev.tip}</div>
+    </div>
+  `).join('');
+
+  // Readings for this month
+  loadReadings().then(renderMonthReadings);
+}
+
+// ── THIS WEEK ──
+const DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+let _currentWeekStart = getWeekStart(new Date());
+
+function getWeekStart(date) {
+  const d = new Date(date);
+  const day = d.getDay(); // 0=Sun
+  d.setDate(d.getDate() - day);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function shiftWeek(delta) {
+  _currentWeekStart = new Date(_currentWeekStart);
+  _currentWeekStart.setDate(_currentWeekStart.getDate() + delta * 7);
+  renderWeek();
+}
+
+function goToCurrentWeek() {
+  _currentWeekStart = getWeekStart(new Date());
+  renderWeek();
+}
+
+function formatWeekLabel(start) {
+  const end = new Date(start);
+  end.setDate(end.getDate() + 6);
+  const opts = { month: 'short', day: 'numeric' };
+  const startStr = start.toLocaleDateString('en-US', opts);
+  const endStr = end.toLocaleDateString('en-US', { ...opts, year: 'numeric' });
+  return `${startStr} – ${endStr}`;
+}
+
+function eventOverlapsWeek(ev, weekStart) {
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setHours(23, 59, 59);
+
+  // Check primary date
+  const str = ev.date.split('&')[0].trim();
+  const pd = new Date(str);
+  if (!isNaN(pd) && pd >= weekStart && pd <= weekEnd) return true;
+
+  // Check duration window
+  const durMatch = ev.duration.match(/^(.+?)\s*·/);
+  if (!durMatch) return false;
+  const range = durMatch[1].trim();
+  const parts = range.split('–').map(s => s.trim());
+  if (parts.length < 2) return false;
+  const endRaw = parts[1];
+  const endDate = new Date(endRaw);
+  if (isNaN(endDate)) return false;
+  let startRaw = parts[0];
+  if (!/\d{4}/.test(startRaw)) startRaw += ', ' + endDate.getFullYear();
+  const startDate = new Date(startRaw);
+  if (isNaN(startDate)) return false;
+  return startDate <= weekEnd && endDate >= weekStart;
+}
+
+function getWeekNarrative(weekStart) {
+  // Find events active this week and build a short narrative
+  const weekEvents = data.events.filter(ev => eventOverlapsWeek(ev, weekStart));
+  if (!weekEvents.length) {
+    return `A quieter week with no exact transiting events — a good time to integrate recent shifts and tend to everyday life. The background planetary themes continue their slower work beneath the surface.`;
+  }
+  const positives = weekEvents.filter(e => e.type === 'positive').map(e => e.title.split('—')[0].trim());
+  const challenging = weekEvents.filter(e => e.type === 'challenging').map(e => e.title.split('—')[0].trim());
+  const healing = weekEvents.filter(e => e.type === 'healing').map(e => e.title.split('—')[0].trim());
+  const transform = weekEvents.filter(e => e.type === 'transformative').map(e => e.title.split('—')[0].trim());
+
+  let parts = [];
+  if (positives.length) parts.push(`✦ <strong>Uplifting energy:</strong> ${positives.join(', ')}`);
+  if (challenging.length) parts.push(`⚡ <strong>Worth navigating carefully:</strong> ${challenging.join(', ')}`);
+  if (healing.length) parts.push(`💙 <strong>Healing available:</strong> ${healing.join(', ')}`);
+  if (transform.length) parts.push(`🔮 <strong>Transformative currents:</strong> ${transform.join(', ')}`);
+  return parts.join('<br>');
+}
+
+function renderWeek() {
+  const weekStart = _currentWeekStart;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Label
+  document.getElementById('week-label').textContent = formatWeekLabel(weekStart);
+
+  // Narrative
+  document.getElementById('week-overview').innerHTML = getWeekNarrative(weekStart);
+
+  // Build day map
+  const weekEvents = data.events.filter(ev => eventOverlapsWeek(ev, weekStart));
+  const dayMap = {}; // day-of-week (0-6) → [event types]
+  weekEvents.forEach(ev => {
+    const str = ev.date.split('&')[0].trim();
+    const pd = new Date(str);
+    if (!isNaN(pd)) {
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      if (pd >= weekStart && pd <= weekEnd) {
+        const dow = pd.getDay();
+        if (!dayMap[dow]) dayMap[dow] = [];
+        dayMap[dow].push(ev.type);
+      }
+    }
+  });
+
+  // Day strip
+  const strip = document.getElementById('week-day-strip');
+  let cells = '';
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(weekStart);
+    d.setDate(d.getDate() + i);
+    const isToday = d.getTime() === today.getTime();
+    const dots = (dayMap[i] || []).map(t => `<div class="cal-dot ${t}"></div>`).join('');
+    cells += `<div class="week-day-cell ${isToday ? 'today' : ''} ${dayMap[i] ? 'has-event' : ''}">
+      <div class="week-day-name">${DAY_NAMES[d.getDay()]}</div>
+      <div class="week-day-num">${d.getDate()}</div>
+      ${dots ? `<div class="week-day-dots">${dots}</div>` : '<div class="week-day-dots"></div>'}
+    </div>`;
+  }
+  strip.innerHTML = cells;
+
+  // Events list
+  const listEl = document.getElementById('week-events-list');
+  const noEvEl = document.getElementById('week-no-events');
+  const titleEl = document.getElementById('week-events-title');
+
+  titleEl.textContent = weekEvents.length
+    ? `${weekEvents.length} Transit${weekEvents.length > 1 ? 's' : ''} Active This Week`
+    : '';
+
+  if (!weekEvents.length) {
+    listEl.innerHTML = '';
+    noEvEl.style.display = 'block';
+  } else {
+    noEvEl.style.display = 'none';
+    const typeLabel = { positive: 'Uplifting', challenging: 'Challenging', transformative: 'Transformative', healing: 'Healing' };
+    listEl.innerHTML = weekEvents.map((ev, i) => `
+      <div class="month-event-card ${ev.type}" style="animation-delay:${i * 0.06}s">
+        <div class="month-ev-meta">
+          <span class="month-ev-date">${ev.date}</span>
+          <span class="month-ev-badge ${ev.type}">${typeLabel[ev.type]}</span>
+        </div>
+        <div class="month-ev-title">${ev.title}</div>
+        <div class="month-ev-duration">${ev.duration}</div>
+        <div class="month-ev-body">${ev.description}</div>
+        <div class="month-ev-tip">${ev.tip}</div>
+      </div>
+    `).join('');
+  }
+
+  // Oracle readings this week
+  loadReadings().then(renderWeekReadings);
+}
+
+function renderWeekReadings(readings) {
+  const section = document.getElementById('week-readings-section');
+  if (!section) return;
+
+  const weekStart = _currentWeekStart;
+  const weekEnd = new Date(weekStart);
+  weekEnd.setDate(weekEnd.getDate() + 6);
+  weekEnd.setHours(23, 59, 59, 999);
+
+  const weekReadings = readings.filter(r => {
+    if (!r.skyYear || !r.skyMonth || !r.skyDay) return false;
+    const d = new Date(r.skyYear, r.skyMonth - 1, r.skyDay);
+    return d >= weekStart && d <= weekEnd;
+  });
+
+  const titleEl = document.getElementById('week-readings-title');
+  const listEl = document.getElementById('week-readings-list');
+
+  if (!weekReadings.length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  titleEl.textContent = `${weekReadings.length} Oracle Reading${weekReadings.length > 1 ? 's' : ''} This Week`;
+  listEl.innerHTML = weekReadings.map(r => `
+    <div class="reading-card" id="wrc-${r.id}">
+      <div class="reading-card-header">
+        <div class="reading-meta">
+          <span class="reading-date">${r.dateStr}</span>
+          <span class="reading-sky-snap">${r.skySnap}</span>
+        </div>
+        <button class="reading-delete" onclick="deleteReading('${r.id}')" title="Delete reading">✕</button>
+      </div>
+      <div class="reading-question">"${r.question}"</div>
+      <div class="reading-answer-wrap">
+        <div class="reading-answer">${r.answer}</div>
+      </div>
+      <div class="reading-aspects">${r.aspectSnap}</div>
+    </div>
+  `).join('');
+}
+
+
+const data = {
+  overviewCards: [
+    {
+      icon: "🔄",
+      title: "A Year of Transformation",
+      body: "Pluto in your 2nd house, Uranus in the 6th, and a powerful Uranus conjunction to your Sun mark this as a year of deep change — in your values, your daily rhythms, and your very sense of self. What no longer fits is falling away to make room for who you're becoming."
+    },
+    {
+      icon: "🏠",
+      title: "Roots & Foundations",
+      body: "Saturn and Neptune both move through your 4th house of home and family all year. You're being called to build firmer foundations — possibly literally renovating your living space — while also releasing old patterns and letting your home become a true sanctuary."
+    },
+    {
+      icon: "💰",
+      title: "Values & Worth Reimagined",
+      body: "Pluto in your 2nd house challenges everything about money, possessions, and self-worth. Whether finances expand or contract, the real invitation is to discover what truly matters to you and align your resources with your deepest values."
+    },
+    {
+      icon: "☀️",
+      title: "Personal Awakening",
+      body: "Uranus conjuncts your natal Sun in May 2026 and again in early 2027 — one of the most powerful transits of a lifetime. Old identities, habits, and roles that no longer fit are being shed. Step into a more authentic, liberated version of yourself."
+    },
+    {
+      icon: "🌿",
+      title: "Healing Creativity",
+      body: "Chiron moves from your 4th house (healing family wounds) into your 5th house (healing creative expression) in April. By spring, the door opens to reclaiming your joy, your playfulness, and your right to create freely and fully."
+    }
+  ],
+  planets: [
+    {
+      symbol: "♃",
+      name: "Jupiter",
+      position: "8th House until Oct 3, 2026 · then 9th House",
+      detail: "Joint finances, shared resources, and metaphysical exploration benefit from Jupiter's generous touch until October. Then horizons expand dramatically — travel, study, philosophy, and broader adventures beckon."
+    },
+    {
+      symbol: "♄",
+      name: "Saturn",
+      position: "4th House all year",
+      detail: "A call to build firmer foundations at home and within the family. This could mean renovating your house or simply investing real time in your roots. Slow, steady work on domestic foundations pays off long-term."
+    },
+    {
+      symbol: "♅",
+      name: "Uranus",
+      position: "6th House all year",
+      detail: "Daily routines, health habits, and work schedules become unpredictable and exciting. Rather than forcing structure, embrace flexibility. An unusual pet or unconventional wellness practice may also attract you."
+    },
+    {
+      symbol: "♆",
+      name: "Neptune",
+      position: "4th House all year",
+      detail: "Home life may feel uncertain or foggy at first — possibly linked to family health or domestic confusion. Over time, Neptune invites you to transform your living space into a genuinely nurturing, spiritually meaningful haven."
+    },
+    {
+      symbol: "♇",
+      name: "Pluto",
+      position: "2nd House all year",
+      detail: "Deep, lasting transformation of your relationship with money, possessions, and personal worth. Whether your income swells or shrinks, the invitation is to reassess your values and make changes that reflect what truly matters."
+    },
+    {
+      symbol: "⚷",
+      name: "Chiron",
+      position: "4th House until Apr 3 · then 5th House",
+      detail: "Family wounds surface and heal through early spring. After April, Chiron enters your 5th house — healing the wounds around creative expression, play, and joy that may have been dampened in early life."
+    }
+  ],
+  events: [
+    {
+      date: "Mar 26, 2026",
+      type: "challenging",
+      title: "Chiron Square Neptune — Spiritual Disillusionment",
+      duration: "Mar 8 – Apr 12, 2026 · Exact Mar 26",
+      description: "Your spiritual life is undergoing a significant shake-up. Beliefs and associations that once felt meaningful may now seem hollow or unfulfilling. This is a painful but necessary process of separating reality from fantasy. You're particularly sensitive to the suffering of others — charity work or altruistic pursuits may call to you. Others your age are experiencing this too; sharing your feelings is healing.",
+      tip: "💙 Explore your inner world and innate talents — new meaning emerges through honest self-inquiry, not through pushing forward."
+    },
+    {
+      date: "Apr 2, 2026",
+      type: "challenging",
+      title: "Uranus Square Mars — Tension & Restless Energy",
+      duration: "Mar 4 – Apr 22, 2026 · Exact Apr 2",
+      description: "A charged, frustrating period where your goals feel constantly thwarted. Even naturally calm people feel agitated under this transit. Take up a safe physical sport or outlet for pent-up energy. Exercise extra care when driving or handling sharp objects. The key is assertiveness rather than aggression — others respond far better when you relax your grip.",
+      tip: "⚡ Channel your energy into physical outlets. Be assertive, not aggressive — you're pushing harder than you realize."
+    },
+    {
+      date: "Apr 9, 2026",
+      type: "transformative",
+      title: "Uranus Opposition Pluto — One Chapter Ends",
+      duration: "Mar 16 – Apr 29, 2026 · Exact Apr 9",
+      description: "An emotional shift of real depth: one way of life is ending to make way for something genuinely new. This can feel unsettling or thrillingly liberating — or both at once. You're navigating unfamiliar territory. Ask for support; seek insight into the unknown areas of your life. As Tim Gunn says: 'Life is not a solo act.'",
+      tip: "🔮 Lean into your support network. Ask for the advice and perspective that will help you navigate this threshold."
+    },
+    {
+      date: "Apr 14 & May 29, 2026",
+      type: "transformative",
+      title: "Pluto Square Nodes — A Life Turning Point",
+      duration: "Feb 23 – Jul 22, 2026 · Exact Apr 14 & May 29",
+      description: "A powerful, extended period of karmic reckoning. Whether you realize it or not, you've reached a genuine turning point. Old habits, projects, and people are ready to be released. New friendships, associations, and opportunities are arriving. The key is discernment: learn to distinguish real motives and true situations, then let go of what no longer serves while welcoming what does.",
+      tip: "🔮 Face the truth of your situation clearly — which people and habits to release, and which new ones to embrace."
+    },
+    {
+      date: "Apr 28, 2026",
+      type: "positive",
+      title: "Saturn Trine Ascendant — Strength & Trustworthiness",
+      duration: "Apr 19 – May 7, 2026 · Exact Apr 28",
+      description: "Your strength, endurance, and wisdom are at a peak. Self-confidence and a clear understanding of your own and others' limits make you magnetic. A potential personal or business partner may be drawn to your reliability. Relationships form that are both successful and genuinely beneficial. The time is right to build meaningful connections while maintaining strong self-care.",
+      tip: "✦ Step into your authority — your reliability and trustworthiness are visible and deeply attractive to others right now."
+    },
+    {
+      date: "May 2, 2026",
+      type: "positive",
+      title: "Uranus Trine Uranus — Authentic Independence",
+      duration: "Apr 13 – May 19, 2026 · Exact May 2",
+      description: "At around age 27, this transit arrives for the first time — an invitation to break away from old conditioning and live more fully as yourself. You have a positive attitude toward change, a hunger for your own aspirations rather than others' expectations. New ideas, experiences, and fields of science, technology, or metaphysics open up. Originality and intuition are your gifts right now.",
+      tip: "✦ Claim your independence with confidence — you know yourself better than you ever have before."
+    },
+    {
+      date: "May 10, 2026",
+      type: "positive",
+      title: "Jupiter Trine Moon — Feel-Good & Generous",
+      duration: "May 3 – May 16, 2026 · Exact May 10",
+      description: "A genuinely warm, feel-good transit. You feel good about yourself, your life, and your loved ones — and they feel it too. Home comforts may improve: new furnishings, a move, or a joyful expansion of your family circle. The one caution is over-indulgence. Keep a balanced outlook and share your warmth without losing yourself in excess.",
+      tip: "✦ Let yourself enjoy this window fully — warmth, comfort, and generous love are yours to give and receive."
+    },
+    {
+      date: "May 21, 2026",
+      type: "transformative",
+      title: "Uranus Conjunct Sun — Personal Awakening",
+      duration: "May 4 – Jun 7, 2026 · Exact May 21",
+      description: "One of the most significant transits of your life. Your individuality demands greater expression — old identities, habits, and roles that no longer fit are being shed. If you thrive on novelty, this feels exhilarating. If you prefer stability, it may feel unsettling. Either way, this is breakthrough, not breakdown. You may be drawn to astrology, technology, progressive ideas, or creative ventures. Those close to you may be surprised by your shifting energy — communicate openly and kindly.",
+      tip: "🔮 Embrace the reinvention. This is the moment you'll look back on and say: 'That's when I began to honour who I truly am.'"
+    },
+    {
+      date: "May 24, 2026",
+      type: "healing",
+      title: "Chiron Trine Mars — Bridges Rebuilt",
+      duration: "May 6 – Jun 15, 2026 · Exact May 24",
+      description: "Opportunities arise to follow your heart's true ambition — as long as you're pursuing genuine purpose, not ego-driven impulse. Bridges burnt in the past can now be mended, opening the way for more meaningful activities. Both physical and emotional growth are available to you.",
+      tip: "💙 Pursue what your heart truly wants. This is a beautiful window for mending what was broken and moving forward."
+    },
+    {
+      date: "May 25, 2026",
+      type: "positive",
+      title: "Saturn Trine Jupiter — Hard-Earned Rewards",
+      duration: "May 15 – Jun 6, 2026 · Exact May 25",
+      description: "A positive balance between security and exploration. You can make plans that truly advance your goals — attracting the resources you need, acting with good judgment, and earning the respect of others. Like a mountain climber who plans every detail before setting out, you can make steady, confident progress. Business dealings and professional life especially benefit.",
+      tip: "✦ Plan carefully and act with confidence — you have the wisdom and resources to advance your most important goals."
+    },
+    {
+      date: "May 27, 2026",
+      type: "positive",
+      title: "Jupiter Trine Saturn — Wisdom in Action",
+      duration: "May 21 – Jun 1, 2026 · Exact May 27",
+      description: "Fun and work find a beautiful balance. You shoulder responsibilities while seizing new opportunities to expand. Good judgment leads to decisions with real long-term potential. The only risk is complacency — letting opportunities slip by because things feel easy. Wise, considered action is what this moment calls for.",
+      tip: "✦ Act with intention — don't let this golden window pass you by through inertia."
+    },
+    {
+      date: "Jun 7, 2026",
+      type: "challenging",
+      title: "Jupiter Opposition Neptune — Lost in the Maze",
+      duration: "Jun 2 – Jun 12, 2026 · Exact Jun 7",
+      description: "A temporarily confusing time — whatever direction you want to explore, the path feels unclear. Others may seem deceptive, but your own idealism and unrealistic expectations may be the real culprit. Avoid long-term commitments made in this fog. Bide your time, stay grounded, and push for spiritual growth without forcing decisions.",
+      tip: "⚡ Stay grounded and patient — bide your time, and all will become clearer soon."
+    },
+    {
+      date: "Jun 26, 2026",
+      type: "positive",
+      title: "Jupiter Trine Pluto — Power & Career Recognition",
+      duration: "Jun 21 – Jul 1, 2026 · Exact Jun 26",
+      description: "You strike exactly the right balance of confidence and persistence. Others notice your power and composure. Career advancement and recognition are in reach — your judgment is sound. Make the most of any opportunity for advancement that arrives, as this window doesn't last long.",
+      tip: "✦ Make your move — confidence, purpose, and career recognition are all aligned."
+    },
+    {
+      date: "Jun 30 & Sep 7, 2026",
+      type: "challenging",
+      title: "Chiron Square Uranus — Short-Circuiting Under Pressure",
+      duration: "Jun 4 – Oct 4, 2026 · Exact Jun 30 & Sep 7",
+      description: "A long, demanding transit asking you to juggle more commitments than you can truly handle. You're being asked to incorporate new talents into your life — but you can only do so much. Painful as it is, making a deliberate choice about your priorities is exactly what's needed. Move forward knowing you're following your true path.",
+      tip: "⚡ Choose consciously — you can't do everything. Letting go of some things honours what truly matters most."
+    },
+    {
+      date: "Jul 1, 2026",
+      type: "challenging",
+      title: "Jupiter Opposition Uranus — Freedom vs. Obligation",
+      duration: "Jun 27 – Jul 6, 2026 · Exact Jul 1",
+      description: "A sudden urge for change collides with your existing responsibilities. You feel called toward new horizons but rattled at the thought of breaking free. Others' needs may feel like obstacles. Either way, this is a moment to ponder your life and free yourself of unnecessary restrictions — the new-found freedom will be appreciated in time.",
+      tip: "⚡ Reflect on what restrictions are truly necessary — and which ones you can finally release."
+    },
+    {
+      date: "Jul 24, 2026",
+      type: "challenging",
+      title: "Jupiter Square Nodes — Social Over-Commitment",
+      duration: "Jul 20 – Jul 29, 2026 · Exact Jul 24",
+      description: "Social commitments feel overwhelming. You want to explore new connections but struggle to let go of old ones, leaving you over-extended. You may feel anti-social and questioning whether your relationships are truly serving your growth. This is a clearing — let go of patterns that keep you small to make room for renewed, more authentic connection.",
+      tip: "⚡ Give yourself permission to step back and assess — which relationships genuinely support who you're becoming?"
+    },
+    {
+      date: "Aug 2, 2026",
+      type: "challenging",
+      title: "Jupiter Square Venus — Relationship Tensions",
+      duration: "Jul 29 – Aug 7, 2026 · Exact Aug 2",
+      description: "A positive time for socializing, but with undercurrents of tension. Expectations between you and those you love may be out of sync — one of you is seeking adventure while the other needs steadiness. If you're feeling rejected, give it a little time. This is a temporary imbalance, and Jupiter's overall influence tends toward positive resolution.",
+      tip: "⚡ Be patient with your loved ones — allow a little space for both adventure and tenderness to coexist."
+    },
+    {
+      date: "Aug 9, 2026",
+      type: "positive",
+      title: "Jupiter Trine Ascendant — Joy & Social Grace",
+      duration: "Aug 5 – Aug 14, 2026 · Exact Aug 9",
+      description: "Health, happiness, and social magnetism are all flowing. Joyful occasions, supportive people, and a sense of being truly seen and appreciated. You may travel, study something fascinating, achieve an award, or step into a teaching role. A healthy diet or fitness routine started now is especially likely to stick.",
+      tip: "✦ Say yes to joy, social connection, and self-improvement — you're at your most magnetic and receptive."
+    },
+    {
+      date: "Aug 22, 2026",
+      type: "positive",
+      title: "Jupiter Trine Jupiter — Lucky in Love & Life",
+      duration: "Aug 18 – Aug 27, 2026 · Exact Aug 22",
+      description: "Optimism, good fortune, and a general sense of life expanding in the right directions. While not the most dramatic of transits, it brings genuine luck — especially around travel, study, and anything that broadens your horizons. Don't pass up opportunities, but use your discernment.",
+      tip: "✦ Keep your eyes open — the opportunities arriving now are real and worth pursuing."
+    },
+    {
+      date: "Sep 29, 2026",
+      type: "positive",
+      title: "Saturn Trine Jupiter — Steady Rewards (Second Pass)",
+      duration: "Sep 16 – Oct 12, 2026 · Exact Sep 29",
+      description: "A second visit from Saturn's trine to your natal Jupiter. Another window of well-earned rewards, sound planning, and balanced confidence. Business dealings and professional life benefit especially. Like the first pass in May, the call is to plan carefully, act with wisdom, and make steady progress toward your true goals.",
+      tip: "✦ Build on the progress made in May — steady, wise action continues to bring real rewards."
+    },
+    {
+      date: "Oct 15, 2026",
+      type: "healing",
+      title: "Chiron Trine Mars — Heart's Ambition Returns",
+      duration: "Sep 22 – Nov 6, 2026 · Exact Oct 15",
+      description: "A second healing window around your ambitions and actions. Bridges rebuilt in May can now be strengthened. Opportunities arise to move forward in physical activities, creative pursuits, and emotional growth — all in service of your most authentic purpose.",
+      tip: "💙 Continue following your heart. What you started healing in May deepens beautifully now."
+    },
+    {
+      date: "Nov 8, 2026 & Jan 11, 2027",
+      type: "positive",
+      title: "Saturn Trine Ascendant — Strength Returns (Long Window)",
+      duration: "Oct 23, 2026 – Jan 26, 2027 · Exact Nov 8 & Jan 11",
+      description: "A long, stabilizing window of strength, endurance, and relational confidence. Your self-wisdom and reliability attract the right people — personal and professional partnerships deepen or begin. The time is right to build lasting connections while maintaining a steady, grounded level of self-care.",
+      tip: "✦ Invest in your most meaningful relationships — your reliability and depth are deeply appreciated right now."
+    },
+    {
+      date: "Jan 6, 2027",
+      type: "challenging",
+      title: "Chiron Square Neptune — Spiritual Seeking (Second Pass)",
+      duration: "Dec 21, 2026 – Jan 22, 2027 · Exact Jan 6",
+      description: "A second pass of Chiron's square to your natal Neptune. The spiritual questioning of March returns — and what couldn't be fully resolved then may find its answer now. Empathy for the world's suffering is high. Charity, altruism, and inner exploration are powerful medicines for the confusion.",
+      tip: "💙 Share your insights with those going through similar experiences — you're not alone, and your perspective helps others."
+    },
+    {
+      date: "Feb 3, 2027",
+      type: "transformative",
+      title: "Pluto Square Nodes — Turning Point Returns",
+      duration: "Jan 2 – Mar 9, 2027 · Exact Feb 3",
+      description: "The karmic turning point of April and May returns for a final pass. What was set in motion then reaches its culmination. The truth of situations and people is now clearer — you know what to release and what to embrace. Move forward into the new chapter with purpose and energy.",
+      tip: "🔮 Complete the transition that began in spring — you can now see the path forward with real clarity."
+    },
+    {
+      date: "Feb 8, 2027",
+      type: "transformative",
+      title: "Uranus Conjunct Sun — Awakening Continues",
+      duration: "Dec 27, 2026 – Mar 22, 2027 · Exact Feb 8",
+      description: "The powerful awakening that began in May 2026 reaches its fullest expression. The reinvention of your identity and the shedding of old roles continues with even deeper commitment. Those closest to you may still be adjusting to who you're becoming — reassure them, but don't stop the becoming.",
+      tip: "🔮 Trust the transformation fully — the more consciously you engage with this transit, the more gracefully you emerge."
+    },
+    {
+      date: "Feb 16, 2027",
+      type: "positive",
+      title: "Saturn Trine Jupiter — A Third Harvest",
+      duration: "Feb 5 – Feb 25, 2027 · Exact Feb 16",
+      description: "A third and final pass of Saturn's trine to your natal Jupiter closes the year with well-earned rewards and balanced confidence. Professional recognition, sound planning, and the fruit of months of steady work all arrive together. End this powerful year knowing you've built something lasting.",
+      tip: "✦ Receive what you've worked for with gratitude — this is the harvest of a year of genuine transformation."
+    }
+  ]
+};
+
+// ── NATAL CHART WHEEL ──
+(function() {
+  const svg = document.getElementById('chart-wheel');
+  const cx = 250, cy = 250;
+  const R_outer = 230, R_sign = 200, R_house = 160, R_planet = 125, R_inner = 80;
+
+  const signs = ['Ari','Tau','Gem','Can','Leo','Vir','Lib','Sco','Sag','Cap','Aqu','Pis'];
+  const signColors = ['#e07070','#7ecdc4','#e8d5a3','#6aaddb','#e8b44a','#a8c8a0',
+                      '#b07fd4','#e07070','#e8a060','#6aaddb','#7ecdc4','#b07fd4'];
+  const signSymbols = ['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+
+  // ASC = Sagittarius = sign index 8 (0=Ari). ASC degree = 11°42' Sagittarius
+  // We place ASC at 180° (left, 9 o'clock) as per traditional chart display
+  const ascSignIndex = 8; // Sagittarius
+  const ascDeg = 11.70; // 11°42' Sagittarius
+
+  // Convert zodiac absolute degree to SVG angle
+  // ASC = Sagittarius 11.70° = 251.70° absolute. We place ASC at 180° on the SVG (left).
+  const ascAbsolute = ascSignIndex * 30 + ascDeg; // 251.70
+
+  function zodiacToAngle(absZodDeg) {
+    // rotate so ASC (150°) sits at 180° on circle, counterclockwise zodiac = clockwise SVG
+    let angle = 180 - (absZodDeg - ascAbsolute);
+    return ((angle % 360) + 360) % 360;
+  }
+
+  function polarToXY(angleDeg, r) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+  }
+
+  function addEl(tag, attrs, text) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v);
+    if (text) el.textContent = text;
+    svg.appendChild(el);
+    return el;
+  }
+
+  function arc(cx, cy, r, startAngle, endAngle) {
+    const s = polarToXY(startAngle, r);
+    const e = polarToXY(endAngle, r);
+    const large = ((endAngle - startAngle + 360) % 360) > 180 ? 1 : 0;
+    return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 1 ${e.x} ${e.y}`;
+  }
+
+  // Background
+  addEl('circle', { cx, cy, r: R_outer, fill: '#0d0a14' });
+
+  // Sign ring
+  for (let i = 0; i < 12; i++) {
+    const absStart = i * 30;
+    const absEnd = (i + 1) * 30;
+    const aStart = zodiacToAngle(absStart);
+    const aEnd = zodiacToAngle(absEnd);
+    // Wedge
+    const sOuter = polarToXY(aStart, R_outer);
+    const eOuter = polarToXY(aEnd, R_outer);
+    const sInner = polarToXY(aStart, R_sign);
+    const eInner = polarToXY(aEnd, R_sign);
+    const large = 0; // each segment is 30° < 180
+    const pathD = `M ${sInner.x} ${sInner.y} L ${sOuter.x} ${sOuter.y} A ${R_outer} ${R_outer} 0 0 1 ${eOuter.x} ${eOuter.y} L ${eInner.x} ${eInner.y} A ${R_sign} ${R_sign} 0 0 0 ${sInner.x} ${sInner.y} Z`;
+    addEl('path', { d: pathD, fill: i % 2 === 0 ? 'rgba(201,169,110,0.05)' : 'rgba(201,169,110,0.02)', stroke: 'rgba(201,169,110,0.25)', 'stroke-width': '0.5' });
+
+    // Sign symbol
+    const midAngle = zodiacToAngle(i * 30 + 15);
+    const symPos = polarToXY(midAngle, (R_outer + R_sign) / 2);
+    addEl('text', { x: symPos.x, y: symPos.y, 'text-anchor': 'middle', 'dominant-baseline': 'central', fill: signColors[i], 'font-size': '13', 'font-family': 'serif', opacity: '0.9' }, signSymbols[i]);
+  }
+
+  // House ring
+  const houseSigns = [8,9,10,11,0,1,2,3,4,5,6,7]; // Sag, Cap, Aqu, Pis, Ari, Tau, Gem, Can, Leo, Vir, Lib, Sco
+  const houseDegrees = [0,0,0,0,0,0,0,0,0,0,0,0]; // simplify: each house starts at 0° of its sign
+  for (let i = 0; i < 12; i++) {
+    const absStart = houseSigns[i] * 30;
+    const absEnd = houseSigns[(i + 1) % 12] * 30;
+    const aStart = zodiacToAngle(absStart);
+    const aLine = polarToXY(aStart, R_house);
+    const aLineOuter = polarToXY(aStart, R_sign);
+    addEl('line', { x1: aLine.x, y1: aLine.y, x2: aLineOuter.x, y2: aLineOuter.y, stroke: 'rgba(201,169,110,0.35)', 'stroke-width': '0.8' });
+
+    // House number
+    const midAbs = houseSigns[i] * 30 + 15;
+    const hMid = zodiacToAngle(midAbs);
+    const hPos = polarToXY(hMid, (R_sign + R_house) / 2);
+    const hLabels = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
+    addEl('text', { x: hPos.x, y: hPos.y, 'text-anchor': 'middle', 'dominant-baseline': 'central', fill: 'rgba(201,169,110,0.5)', 'font-size': '9', 'font-family': 'Cinzel, serif', 'letter-spacing': '1' }, hLabels[i]);
+  }
+
+  // Inner circles
+  addEl('circle', { cx, cy, r: R_house, fill: 'none', stroke: 'rgba(201,169,110,0.2)', 'stroke-width': '0.5' });
+  addEl('circle', { cx, cy, r: R_inner, fill: 'rgba(201,169,110,0.03)', stroke: 'rgba(201,169,110,0.15)', 'stroke-width': '0.5' });
+
+  // Spoke lines for angular houses
+  const angulars = [0, 3, 6, 9]; // ASC, IC, DSC, MC
+  for (const h of angulars) {
+    const abs = houseSigns[h] * 30;
+    const a = zodiacToAngle(abs);
+    const p1 = polarToXY(a, R_inner);
+    const p2 = polarToXY(a, R_sign);
+    addEl('line', { x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, stroke: 'rgba(201,169,110,0.6)', 'stroke-width': '1.2' });
+  }
+
+  // Planets - Emily's natal chart
+  // absZod = sign_index * 30 + degrees
+  // Aries=0, Taurus=30, Gemini=60, Cancer=90, Leo=120, Virgo=150, Libra=180, Scorpio=210, Sag=240, Cap=270, Aqu=300, Pis=330
+  const planets = [
+    { sym: '☉', absZod: 60 + 1.45, color: '#e8d5a3', label: '☉' },    // Sun Gemini 1°
+    { sym: '☽', absZod: 330 + 20.25, color: '#c8d8f0', label: '☽' },  // Moon Pisces 20°
+    { sym: '☿', absZod: 60 + 18.28, color: '#a0c8a0', label: '☿' },   // Merc Gemini 18°
+    { sym: '♀', absZod: 30 + 7.35, color: '#e8a0b8', label: '♀' },    // Ven Taurus 7°
+    { sym: '♂', absZod: 120 + 28.82, color: '#e07070', label: '♂' },  // Mars Leo 28°
+    { sym: '♃', absZod: 240 + 11.70, color: '#e8b44a', label: '♃' },  // Jup Sag 11° R
+    { sym: '♄', absZod: 330 + 23.17, color: '#7ecdc4', label: '♄' },  // Sat Pis 23°
+    { sym: '♅', absZod: 300 + 0.35, color: '#90c8e0', label: '♅' },   // Ura Aqu 0° R
+    { sym: '♆', absZod: 270 + 25.40, color: '#b07fd4', label: '♆' },  // Nep Cap 25° R
+    { sym: '♇', absZod: 210 + 29.17, color: '#c09060', label: '♇' },  // Plu Sco 29° R
+    { sym: '☊', absZod: 210 + 5.43, color: '#d4b07f', label: '☊' },   // Node Sco 5°
+  ];
+
+  // Spread planets to avoid overlap
+  const placed = [];
+  function getSpreadAngle(angle) {
+    let spread = zodiacToAngle(angle);
+    for (const p of placed) {
+      if (Math.abs(spread - p) < 12 || Math.abs(spread - p - 360) < 12 || Math.abs(spread - p + 360) < 12) {
+        spread += 13;
+      }
+    }
+    placed.push(spread);
+    return spread;
+  }
+
+  for (const p of planets) {
+    const baseAngle = zodiacToAngle(p.absZod);
+    const spreadAngle = getSpreadAngle(p.absZod);
+    const pos = polarToXY(spreadAngle, R_planet);
+
+    // Tick line from outer house ring to planet
+    const tick1 = polarToXY(baseAngle, R_house - 4);
+    const tick2 = polarToXY(baseAngle, R_house - 14);
+    addEl('line', { x1: tick1.x, y1: tick1.y, x2: tick2.x, y2: tick2.y, stroke: p.color, 'stroke-width': '0.8', opacity: '0.6' });
+
+    // Connector line if spread
+    if (Math.abs(spreadAngle - baseAngle) > 2) {
+      const pOuter = polarToXY(baseAngle, R_house - 16);
+      addEl('line', { x1: pos.x, y1: pos.y, x2: pOuter.x, y2: pOuter.y, stroke: p.color, 'stroke-width': '0.5', opacity: '0.3' });
+    }
+
+    // Glyph
+    addEl('text', { x: pos.x, y: pos.y, 'text-anchor': 'middle', 'dominant-baseline': 'central', fill: p.color, 'font-size': '13', 'font-family': 'serif' }, p.sym);
+  }
+
+  // Center label
+  addEl('text', { x: cx, y: cy - 8, 'text-anchor': 'middle', fill: 'rgba(201,169,110,0.5)', 'font-size': '9', 'font-family': 'Cinzel, serif', 'letter-spacing': '2' }, 'EMILY');
+  addEl('text', { x: cx, y: cy + 8, 'text-anchor': 'middle', fill: 'rgba(201,169,110,0.35)', 'font-size': '8', 'font-family': 'serif' }, 'May 22 1995');
+
+  // ASC / DSC / MC / IC labels
+  const angles = [
+    { label: 'ASC', abs: 251.70, offset: -12 },
+    { label: 'DSC', abs: 71.70, offset: 4 },
+    { label: 'MC', abs: 176.52, offset: -6 },
+    { label: 'IC', abs: 356.52, offset: -6 },
+  ];
+  for (const a of angles) {
+    const ang = zodiacToAngle(a.abs);
+    const p = polarToXY(ang, R_sign - 8);
+    addEl('text', { x: p.x + a.offset, y: p.y, 'text-anchor': 'middle', fill: 'rgba(201,169,110,0.7)', 'font-size': '8', 'font-family': 'Cinzel, serif', 'letter-spacing': '1' }, a.label);
+  }
+})();
+
+// Render overview cards
+const overviewGrid = document.getElementById('overview-grid');
+overviewGrid.innerHTML = data.overviewCards.map((card, i) => `
+  <div class="overview-card" style="animation-delay:${i * 0.1}s">
+    <div class="oc-icon">${card.icon}</div>
+    <h3>${card.title}</h3>
+    <p>${card.body}</p>
+  </div>
+`).join('');
+
+// Render planet cards
+const planetGrid = document.getElementById('planet-grid');
+planetGrid.innerHTML = data.planets.map((p, i) => `
+  <div class="planet-card" style="animation-delay:${i * 0.08}s">
+    <div class="symbol">${p.symbol}</div>
+    <div class="planet-name">${p.name}</div>
+    <div class="planet-pos"><strong>${p.position}</strong><br>${p.detail}</div>
+  </div>
+`).join('');
+
+// Render timeline
+const badgeMap = { positive: 'badge-positive', challenging: 'badge-challenging', transformative: 'badge-transformative', healing: 'badge-healing' };
+const labelMap = { positive: 'Uplifting', challenging: 'Challenging', transformative: 'Transformative', healing: 'Healing' };
+
+const timeline = document.getElementById('timeline');
+timeline.innerHTML = data.events.map((ev, i) => {
+  const type = ev.type || 'positive';
+  return `
+    <div class="event ${type}" style="animation-delay:${i * 0.05}s">
+      <div class="event-header" onclick="toggle(this)">
+        <span class="event-date">${ev.date}</span>
+        <span class="event-badge ${badgeMap[type]}">${labelMap[type]}</span>
+        <span class="event-title">${ev.title}</span>
+        <span class="event-chevron">▼</span>
+      </div>
+      <div class="event-body">
+        <div class="event-duration">${ev.duration}</div>
+        <p>${ev.description}</p>
+        <div class="key-theme">${ev.tip}</div>
+      </div>
+    </div>
+  `;
+}).join('');
+
+// Filter buttons
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    const filter = this.dataset.filter;
+    document.querySelectorAll('.event').forEach(ev => {
+      ev.style.display = (filter === 'all' || ev.classList.contains(filter)) ? '' : 'none';
+    });
+  });
+});
+
+function toggle(header) {
+  header.parentElement.classList.toggle('open');
+}
+
+// ══════════════════════════════════════════════
+// TODAY'S SKY — Simplified but real planetary positions
+// Uses mean longitude formulas (low-precision but good enough for signs + degrees)
+// ══════════════════════════════════════════════
+
+function calcTodayPlanets(dateOverride) {
+  // J2000.0 epoch = Jan 1.5 2000 = JD 2451545.0
+  const now = dateOverride || new Date();
+  const JD = (now.getTime() / 86400000) + 2440587.5;
+  const T = (JD - 2451545.0) / 36525; // Julian centuries from J2000
+
+  // Mean longitudes (degrees) — simplified VSOP87 / IAU mean elements
+  function norm(x) { return ((x % 360) + 360) % 360; }
+
+  const raw = {
+    Sun:     norm(280.46646 + 36000.76983 * T + 0.0003032 * T * T),
+    Moon:    norm(218.3165 + 481267.8813 * T),
+    Mercury: norm(252.25084 + 149472.67411 * T),
+    Venus:   norm(181.97973 + 58517.81539 * T),
+    Mars:    norm(355.45332 + 19140.29934 * T),
+    Jupiter: norm(34.89503 + 3034.74612 * T),
+    Saturn:  norm(50.07780 + 1222.11353 * T),
+    Uranus:  norm(314.05501 + 428.46819 * T),
+    Neptune: norm(304.34866 + 218.45945 * T),
+    Pluto:   norm(238.92903 + 145.20780 * T),
+    Chiron:  norm(209.67 + 3646.0 * T / 365.25 * (360/50.7)) // approx 50.7yr orbit
+  };
+
+  // Add Sun's equation of centre approximation
+  const M_sun = norm(357.52911 + 35999.05029 * T);
+  const Mrad = M_sun * Math.PI / 180;
+  const eoc = (1.9146 - 0.004817 * T) * Math.sin(Mrad)
+            + (0.019993 - 0.000101 * T) * Math.sin(2 * Mrad)
+            + 0.00029 * Math.sin(3 * Mrad);
+  raw.Sun = norm(raw.Sun + eoc - 0.00569 - 0.00478 * Math.sin((125.04 - 1934.136 * T) * Math.PI / 180));
+
+  const signs = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+  const symbols = { Sun:'☉', Moon:'☽', Mercury:'☿', Venus:'♀', Mars:'♂', Jupiter:'♃', Saturn:'♄', Uranus:'♅', Neptune:'♆', Pluto:'♇', Chiron:'⚷' };
+  const colors = { Sun:'#e8d5a3', Moon:'#c8d8f0', Mercury:'#a0c8a0', Venus:'#e8a0b8', Mars:'#e07070', Jupiter:'#e8b44a', Saturn:'#7ecdc4', Uranus:'#90c8e0', Neptune:'#b07fd4', Pluto:'#c09060', Chiron:'#d4b07f' };
+
+  const result = [];
+  for (const [name, lon] of Object.entries(raw)) {
+    const signIdx = Math.floor(lon / 30);
+    const deg = lon % 30;
+    result.push({
+      name, symbol: symbols[name], color: colors[name],
+      sign: signs[signIdx], lon,
+      deg: Math.floor(deg), min: Math.floor((deg % 1) * 60),
+      signIdx
+    });
+  }
+  return result;
+}
+
+// Emily's natal planets (absolute zodiac degrees)
+// Signs: Aries=0, Taurus=30, Gemini=60, Cancer=90, Leo=120, Virgo=150, Libra=180, Scorpio=210, Sag=240, Cap=270, Aqu=300, Pis=330
+const connorNatal = [
+  { name: 'Sun',     lon: 60 + 1.45,   label: 'Natal Sun',     sign: 'Gemini',      house: 7  },
+  { name: 'Moon',    lon: 330 + 20.25, label: 'Natal Moon',    sign: 'Pisces',      house: 4  },
+  { name: 'Mercury', lon: 60 + 18.28,  label: 'Natal Mercury', sign: 'Gemini',      house: 7  },
+  { name: 'Venus',   lon: 30 + 7.35,   label: 'Natal Venus',   sign: 'Taurus',      house: 6  },
+  { name: 'Mars',    lon: 120 + 28.82, label: 'Natal Mars',    sign: 'Leo',         house: 9  },
+  { name: 'Jupiter', lon: 240 + 11.70, label: 'Natal Jupiter', sign: 'Sagittarius', house: 1  },
+  { name: 'Saturn',  lon: 330 + 23.17, label: 'Natal Saturn',  sign: 'Pisces',      house: 4  },
+  { name: 'Uranus',  lon: 300 + 0.35,  label: 'Natal Uranus',  sign: 'Aquarius',    house: 3  },
+  { name: 'Neptune', lon: 270 + 25.40, label: 'Natal Neptune', sign: 'Capricorn',   house: 2  },
+  { name: 'Pluto',   lon: 210 + 29.17, label: 'Natal Pluto',   sign: 'Scorpio',     house: 12 },
+  { name: 'ASC',     lon: 240 + 11.70, label: 'Natal ASC',     sign: 'Sagittarius', house: 1  },
+  { name: 'MC',      lon: 150 + 26.52, label: 'Natal MC',      sign: 'Virgo',       house: 10 },
+  { name: 'N.Node',  lon: 210 + 5.43,  label: 'Natal N.Node',  sign: 'Scorpio',     house: 12 },
+];
+
+// Emily's house cusps — each entry is the absolute zodiac longitude of the cusp
+// I Sag 11.70°=251.70, II Cap 0°=270, III Aqu 0°=300, IV Pis 0°=330,
+// V Ari 0°=0, VI Tau 0°=30, VII Gem 0°=60, VIII Can 0°=90,
+// IX Leo 0°=120, X Vir 26.52°=176.52, XI Lib 0°=180, XII Sco 0°=210
+const HOUSE_CUSPS = [251.70, 270, 300, 330, 0, 30, 60, 90, 120, 176.52, 180, 210];
+const HOUSE_THEMES = [
+  'Self & Identity', 'Money & Values', 'Communication', 'Home & Roots',
+  'Creativity & Romance', 'Health & Routine', 'Relationships', 'Shared Resources & Transformation',
+  'Philosophy & Travel', 'Career & Status', 'Friends & Goals', 'Inner Life & Solitude'
+];
+
+function getTransitHouse(lon) {
+  // Normalize longitude 0–360
+  const l = ((lon % 360) + 360) % 360;
+  // Find which house: iterate cusps, house i spans from HOUSE_CUSPS[i] to HOUSE_CUSPS[(i+1)%12]
+  for (let i = 0; i < 12; i++) {
+    const start = HOUSE_CUSPS[i];
+    const end = HOUSE_CUSPS[(i + 1) % 12];
+    if (start <= end) {
+      if (l >= start && l < end) return i + 1;
+    } else {
+      // Wraps around 0° (e.g. house VIII: 0°–30°, cusp at 330°–30°)
+      if (l >= start || l < end) return i + 1;
+    }
+  }
+  return 1;
+}
+
+const ASPECT_ORBS = [
+  { name: 'Conjunction', angle: 0,   orb: 8, type: 'neutral' },
+  { name: 'Sextile',     angle: 60,  orb: 5, type: 'easy' },
+  { name: 'Square',      angle: 90,  orb: 7, type: 'hard' },
+  { name: 'Trine',       angle: 120, orb: 7, type: 'easy' },
+  { name: 'Opposition',  angle: 180, orb: 8, type: 'hard' },
+  { name: 'Quincunx',    angle: 150, orb: 3, type: 'neutral' },
+];
+
+function findAspects(todayPlanets) {
+  const aspects = [];
+  for (const tp of todayPlanets) {
+    const houseNum = getTransitHouse(tp.lon);
+    const houseTheme = HOUSE_THEMES[houseNum - 1];
+    for (const np of connorNatal) {
+      let diff = Math.abs(tp.lon - np.lon) % 360;
+      if (diff > 180) diff = 360 - diff;
+      for (const asp of ASPECT_ORBS) {
+        const delta = Math.abs(diff - asp.angle);
+        if (delta <= asp.orb) {
+          aspects.push({
+            transitPlanet: tp.name,
+            transitSymbol: tp.symbol,
+            transitSign: tp.sign,
+            natalPoint: np.name,
+            natalLabel: np.label,
+            natalSign: np.sign,
+            natalHouse: np.house,
+            aspect: asp.name,
+            type: asp.type,
+            orb: delta.toFixed(1),
+            house: houseNum,
+            houseTheme
+          });
+        }
+      }
+    }
+  }
+  // Sort by orb tightness
+  aspects.sort((a, b) => parseFloat(a.orb) - parseFloat(b.orb));
+  return aspects.slice(0, 12); // top 12
+}
+
+function renderTodaysSky(dateOverride) {
+  const planets = calcTodayPlanets(dateOverride);
+  window._todayPlanets = planets; // store for oracle
+  window._skyDate = dateOverride || new Date(); // store for context label
+
+  const grid = document.getElementById('sky-grid'); // sky-grid is now ds-planet-list container inside ds-main-grid
+  grid.innerHTML = planets.map(p => `
+    <div class="ds-planet-row" style="--planet-color:${p.color}">
+      <span class="ds-planet-sym" style="color:${p.color}">${p.symbol}</span>
+      <span class="ds-planet-name">${p.name}</span>
+      <span class="ds-planet-sign">${p.sign}</span>
+      <span class="ds-planet-deg">${p.deg}°${String(p.min).padStart(2,'0')}'</span>
+    </div>`
+  ).join('');
+
+  const aspects = findAspects(planets);
+  window._todayAspects = aspects;
+  const aspectsList = document.getElementById('sky-aspects-list');
+  if (aspects.length) {
+    aspectsList.innerHTML = aspects.map(a => `
+      <div class="ds-aspect-row ${a.type}">
+        <span class="ds-aspect-pip"></span>
+        <div class="ds-aspect-text">
+          <div class="ds-aspect-main">
+            <strong>${a.transitSymbol} ${a.transitPlanet}</strong>
+            <span class="ds-aspect-type-badge ${a.type}">${a.aspect}</span>
+            <strong>${a.natalPoint}</strong>
+          </div>
+          <div class="ds-aspect-detail">${a.transitSign} H${a.house} · ${a.natalSign} H${a.natalHouse} · orb ${a.orb}°</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('sky-loading').style.display = 'none';
+  document.getElementById('ds-main-grid').style.display = 'grid';
+
+  // Update active label
+  const labelEl = document.getElementById('sky-active-label');
+  if (labelEl) {
+    const d = window._skyDate;
+    const isNow = !dateOverride;
+    labelEl.innerHTML = isNow
+      ? `<span class="ds-label-live">● Live</span> ${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} · ${d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`
+      : `${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} · ${d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}`;
+  }
+
+  // Populate oracle context panel
+  const transitListEl = document.getElementById('oracle-transit-list');
+  if (transitListEl) {
+    transitListEl.innerHTML = planets.map(p => `
+      <div class="oracle-transit-row">
+        <span class="oracle-transit-sym" style="color:${p.color}">${p.symbol}</span>
+        <span class="oracle-transit-name">${p.name}</span>
+        <span class="oracle-transit-pos"><strong>${p.sign}</strong> ${p.deg}°${String(p.min).padStart(2,'0')}'</span>
+      </div>
+    `).join('');
+  }
+
+  const aspectListEl = document.getElementById('oracle-aspect-list');
+  const aspects2 = findAspects(planets);
+  if (aspectListEl && aspects2.length) {
+    aspectListEl.innerHTML = aspects2.map(a => `
+      <div class="oracle-aspect-row">
+        <span class="oracle-asp-dot ${a.type}"></span>
+        <span><strong>${a.transitSymbol} ${a.transitPlanet}</strong> in ${a.transitSign} (H${a.house}) ${a.aspect.toLowerCase()} <strong>${a.natalLabel}</strong> in ${a.natalSign} (H${a.natalHouse})<span class="orb-tag"> · ${a.orb}°</span></span>
+      </div>
+    `).join('');
+  }
+}
+
+// ══════════════════════════════════════════════
+// READINGS PERSISTENCE — uses localStorage
+// ══════════════════════════════════════════════
+
+const STORAGE_KEY = 'emily_oracle_readings';
+
+async function loadReadings() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+async function saveReading(reading) {
+  try {
+    const readings = await loadReadings();
+    readings.unshift(reading);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(readings));
+    return readings;
+  } catch (err) {
+    console.warn('Storage save failed:', err);
+    return null;
+  }
+}
+
+async function deleteReading(id) {
+  try {
+    const readings = await loadReadings();
+    const updated = readings.filter(r => r.id !== id);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    renderReadingsLog(updated);
+    renderMonthReadings(updated);
+    renderWeekReadings(updated);
+  } catch (err) {
+    console.warn('Delete failed:', err);
+  }
+}
+
+function renderReadingsLog(readings) {
+  const wrap = document.getElementById('readings-log');
+  const empty = document.getElementById('readings-empty');
+  const count = document.getElementById('readings-count');
+
+  count.textContent = readings.length ? `${readings.length} saved` : '';
+
+  if (!readings.length) {
+    wrap.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  wrap.innerHTML = readings.map(r => `
+    <div class="reading-card" id="rc-${r.id}">
+      <div class="reading-card-header">
+        <div class="reading-meta">
+          <span class="reading-date">${r.dateStr}</span>
+          <span class="reading-sky-snap">${r.skySnap}</span>
+        </div>
+        <button class="reading-delete" onclick="deleteReading('${r.id}')" title="Delete reading">✕</button>
+      </div>
+      <div class="reading-question">"${r.question}"</div>
+      <div class="reading-answer-wrap">
+        <div class="reading-answer">${r.answer}</div>
+      </div>
+      <div class="reading-aspects">${r.aspectSnap}</div>
+    </div>
+  `).join('');
+}
+
+async function initReadingsLog() {
+  const readings = await loadReadings();
+  renderReadingsLog(readings);
+}
+
+function renderMonthReadings(readings) {
+  const section = document.getElementById('month-readings-section');
+  if (!section) return;
+
+  const year = _currentMonthYear;
+  const month = _currentMonthMonth;
+
+  const monthReadings = readings.filter(r =>
+    r.skyYear === year && r.skyMonth === month
+  );
+
+  const titleEl = document.getElementById('month-readings-title');
+  const listEl  = document.getElementById('month-readings-list');
+
+  if (!monthReadings.length) {
+    section.style.display = 'none';
+    return;
+  }
+
+  section.style.display = 'block';
+  titleEl.textContent = `${monthReadings.length} Oracle Reading${monthReadings.length > 1 ? 's' : ''} This Month`;
+
+  listEl.innerHTML = monthReadings.map(r => `
+    <div class="reading-card" id="mrc-${r.id}">
+      <div class="reading-card-header">
+        <div class="reading-meta">
+          <span class="reading-date">${r.dateStr}</span>
+          <span class="reading-sky-snap">${r.skySnap}</span>
+        </div>
+        <button class="reading-delete" onclick="deleteReading('${r.id}')" title="Delete reading">✕</button>
+      </div>
+      <div class="reading-question">"${r.question}"</div>
+      <div class="reading-answer-wrap">
+        <div class="reading-answer">${r.answer}</div>
+      </div>
+      <div class="reading-aspects">${r.aspectSnap}</div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════════
+// ORACLE
+// ══════════════════════════════════════════════
+
+function useSuggestion(btn) {
+  document.getElementById('oracle-input').value = btn.textContent;
+  document.getElementById('oracle-input').focus();
+}
+
+function buildOracleContext() {
+  const skyDate = window._skyDate || new Date();
+  const dateStr = skyDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = skyDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  const planetLines = (window._todayPlanets || []).map(p =>
+    `${p.name}: ${p.sign} ${p.deg}°${String(p.min).padStart(2,'0')}'`
+  ).join(', ');
+
+  const aspectLines = (window._todayAspects || []).map(a =>
+    `Transiting ${a.transitPlanet} in ${a.transitSign} (H${a.house} — ${a.houseTheme}) ${a.aspect} natal ${a.natalPoint} in ${a.natalSign} (H${a.natalHouse}) (orb ${a.orb}°)`
+  ).join('\n');
+
+  return `Sky date/time: ${dateStr} at ${timeStr}.
+
+EMILY'S NATAL CHART:
+Born: May 22, 1995 · 8:47 PM EDT · Abington, Pennsylvania
+Sun: Gemini 1°27' | Moon: Pisces 20°15' | ASC: Sagittarius 11°42' | MC: Virgo 26°31'
+Mercury: Gemini 18°17' | Venus: Taurus 7°21' | Mars: Leo 28°49'
+Jupiter: Sagittarius 11°42' R | Saturn: Pisces 23°10' | Uranus: Aquarius 0°21' R
+Neptune: Capricorn 25°24' R | Pluto: Scorpio 29°10' R
+Lilith: Gemini 15°42' | North Node: Scorpio 5°26'
+Houses: I Sagittarius, II Capricorn, III Aquarius, IV Pisces, V Aries, VI Taurus,
+        VII Gemini, VIII Cancer, IX Leo, X Virgo, XI Libra, XII Scorpio
+
+TODAY'S TRANSITING PLANETS:
+${planetLines}
+
+ACTIVE ASPECTS (transiting planets to Emily's natal chart):
+${aspectLines}
+
+BACKGROUND TRANSITS FOR THIS YEAR (Mar 2026–Mar 2027):
+- Jupiter in 8th house (joint finances, transformation, legacy) until Oct 2026, then 9th house (travel, philosophy, expansion)
+- Saturn in 4th house all year: building firmer home/family foundations, possible renovation or family focus
+- Uranus in 6th house all year: unpredictable daily routines, exciting shifts in health/work habits
+- Neptune in 4th house: confusion and spiritual seeking around home and family matters
+- Pluto in 2nd house: deep transformation of values, money, and self-worth
+- Chiron in 4th house until April 2026, then 5th house: healing family wounds, then creative expression healing`;
+}
+
+async function askOracle() {
+  const question = document.getElementById('oracle-input').value.trim();
+  if (!question) return;
+
+  document.getElementById('oracle-btn').disabled = true;
+  document.getElementById('oracle-response-wrap').style.display = 'none';
+  document.getElementById('oracle-error').style.display = 'none';
+  document.getElementById('oracle-loading').style.display = 'flex';
+
+  const context = buildOracleContext();
+  const skyDate = window._skyDate || new Date();
+  const dateStr = skyDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
+    + ' · ' + skyDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  const systemPrompt = `You are a wise, warm, and insightful astrologer named the Oracle. You speak with depth and clarity — not mystical vagueness, but grounded, thoughtful astrological interpretation that actually helps the person understand what's happening in their life.
+
+You have been given:
+1. A person's complete natal chart
+2. Today's exact transiting planetary positions
+3. The active aspects between today's transits and their natal chart
+4. The major background transit themes for the year
+
+Your job is to answer their question by synthesising all of this information. Be specific — name the relevant planets, aspects, and houses. Explain what they mean in plain language, with astrological depth. Be warm and encouraging without being saccharine. Acknowledge difficulty honestly when it's there.
+
+Format your response in clear paragraphs — no bullet points, no numbered lists. Use section headers sparingly and only when the answer genuinely has distinct parts. Keep responses between 150–300 words. End with one clear, actionable sentence.`;
+
+  try {
+    const response = await fetch('/api/ask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{
+          role: 'user',
+          content: `${context}\n\nMY QUESTION: ${question}`
+        }]
+      })
+    });
+
+    const data = await response.json();
+    if (!response.ok) throw new Error(String(response.status));
+    if (!data.content || !data.content[0]) throw new Error('No response');
+    const text = data.content.map(c => c.text || '').join('').trim();
+
+    // Show inline
+    document.getElementById('oracle-loading').style.display = 'none';
+    document.getElementById('oracle-date-label').textContent = dateStr;
+    document.getElementById('oracle-response').textContent = text;
+    document.getElementById('oracle-response-wrap').style.display = 'block';
+    document.getElementById('oracle-response-wrap').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    document.getElementById('oracle-input').value = '';
+
+    // Build sky snapshot for the saved card
+    const skySnap = (window._todayPlanets || [])
+      .map(p => `${p.symbol} ${p.sign.slice(0,3)} ${p.deg}°`)
+      .join(' · ');
+    const aspectSnap = (window._todayAspects || []).slice(0, 5)
+      .map(a => `${a.transitSymbol} ${a.aspect.slice(0,3).toLowerCase()} ${a.natalPoint}`)
+      .join(' · ');
+
+    // Save to persistent storage
+    const reading = {
+      id: Date.now().toString(),
+      dateStr,
+      question,
+      answer: text,
+      skySnap,
+      aspectSnap,
+      skyYear: skyDate.getFullYear(),
+      skyMonth: skyDate.getMonth() + 1,
+      skyDay: skyDate.getDate()
+    };
+    const updated = await saveReading(reading);
+    if (updated) {
+      renderReadingsLog(updated);
+      renderMonthReadings(updated);
+      renderWeekReadings(updated);
+    }
+
+  } catch (err) {
+    document.getElementById('oracle-loading').style.display = 'none';
+    document.getElementById('oracle-error').textContent = 'Something went wrong. Please try again.';
+    document.getElementById('oracle-error').style.display = 'block';
+  } finally {
+    document.getElementById('oracle-btn').disabled = false;
+  }
+}
+
+// Allow Enter to submit (Shift+Enter for newline)
+document.getElementById('oracle-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); askOracle(); }
+});
+
+// ── Date/time picker setup ──
+function toLocalDateString(d) {
+  // Returns YYYY-MM-DD in local time for the date input value
+  return d.getFullYear() + '-'
+    + String(d.getMonth() + 1).padStart(2, '0') + '-'
+    + String(d.getDate()).padStart(2, '0');
+}
+function toLocalTimeString(d) {
+  return String(d.getHours()).padStart(2, '0') + ':'
+    + String(d.getMinutes()).padStart(2, '0');
+}
+
+function resetToNow() {
+  const now = new Date();
+  document.getElementById('sky-date').value = toLocalDateString(now);
+  document.getElementById('sky-time').value = toLocalTimeString(now);
+  renderTodaysSky(null);
+}
+
+function refreshSky() {
+  const dateVal = document.getElementById('sky-date').value;
+  const timeVal = document.getElementById('sky-time').value || '12:00';
+  if (!dateVal) { resetToNow(); return; }
+  const [y, m, d] = dateVal.split('-').map(Number);
+  const [h, min] = timeVal.split(':').map(Number);
+  const dt = new Date(y, m - 1, d, h, min, 0);
+  renderTodaysSky(dt);
+}
+
+// Init — set picker to now and render
+const _initNow = new Date();
+document.getElementById('sky-date').value = toLocalDateString(_initNow);
+document.getElementById('sky-time').value = toLocalTimeString(_initNow);
+renderTodaysSky(null);
+initReadingsLog();
+</script>
+
+</body>
+</html>
+
